@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
   }
 }

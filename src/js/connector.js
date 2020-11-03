@@ -1,3 +1,5 @@
+const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
+
 let setBadges = function(flag){
     return {
         text: (flag)? 'APPROVED' : 'INVALID',
@@ -24,6 +26,16 @@ let checkDesc = function(t){
 }
 
 window.TrelloPowerUp.initialize({
+    'card-back-section': function(t){
+        return {
+            title: 'OKR Management Tool Info',
+            content: {
+                type: 'iframe',
+                url: t.signUrl('../html/info.html'),
+                height: 230 // Max height is 1500
+            }
+        };
+    },
     'card-badges': function(t) {
         return checkDesc(t).then(flag => setBadges(flag));
     }
