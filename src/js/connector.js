@@ -2,6 +2,7 @@ const CORRECT_ICON = '../icon/correct.svg';
 
 
 let setBadges = function(flag){
+    console.log(flag);
     return {
             text: (flag)? 'APPROVED' : 'INVALID',
             color: (flag)? 'green' : 'red'
@@ -13,12 +14,13 @@ let checkDesc = function(t){
         .get('desc')
         .then(function(cardDesc){
             if (cardDesc) {
+                console.log("a");
                 let splitFrom = cardDesc.split("from")[1].split("to")[0];
                 let splitTo = cardDesc.split("to")[1].split(" ")[1];
-                console.log(splitFrom + " " + splitTo);
                 return /\d/.test(splitFrom) && /\d/.test(splitTo);
             }
             else {
+                console.log("b");
                 return false;
             }
         });
