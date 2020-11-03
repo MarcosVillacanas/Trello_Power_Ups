@@ -30,6 +30,7 @@ window.TrelloPowerUp.initialize({
         console.log("3");
         return {
             title: 'OKR Management Tool Info',
+            icon: GRAY_ICON, // Must be a gray icon, colored icons not allowed.
             content: {
                 type: 'iframe',
                 url: t.signUrl('./info.html'),
