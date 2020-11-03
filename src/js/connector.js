@@ -27,13 +27,12 @@ let checkDesc = function(t){
 
 window.TrelloPowerUp.initialize({
     'card-back-section': function(t){
-        console.log("3");
         return {
             title: 'OKR Management Tool Info',
             icon: GRAY_ICON, // Must be a gray icon, colored icons not allowed.
             content: {
                 type: 'iframe',
-                url: t.signUrl('./info.html'),
+                url: t.signUrl('../html/info.html'),
                 height: 230 // Max height is 1500
             }
         };
