@@ -3,11 +3,12 @@ window.TrelloPowerUp.initialize({
         return t.card('all')
             .then(function (card) {
                 console.log(JSON.stringify(card, null, 2));
+                return [{
+                    text: card.idShort
+                }];
             });
     }
 });
-
-console.log('Hello World!');
 
 /*
 Trello available data:
