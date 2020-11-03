@@ -1,3 +1,5 @@
+var GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
+
 let setBadges = function(t){
     return t.card('name')
         .get('name')
@@ -22,7 +24,7 @@ let setBadges = function(t){
                 // badges to refresh.
                 // You can mix and match between static and dynamic
                 text: 'Static',
-                icon: HYPERDEV_ICON, // for card front badges only
+                icon: GRAY_ICON, // for card front badges only
                 color: null
             }];
         });
@@ -30,7 +32,6 @@ let setBadges = function(t){
 
 window.TrelloPowerUp.initialize({
     'card-badges': function(t, options){
-        let cardAttachments = options.attachments;
         return setBadges(t);
     }
 });
