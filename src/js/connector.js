@@ -1,10 +1,3 @@
-console.log('Hello World!');
-
-/*
-Trello available data:
-https://developer.atlassian.com/cloud/trello/power-ups/client-library/accessing-trello-data/
-*/
-
 TrelloPowerUp.initialize({
     'card-badges': function(t, opts) {
         return t.card('all')
@@ -16,3 +9,11 @@ TrelloPowerUp.initialize({
             })
     }
 });
+
+console.log('Hello World!');
+
+/*
+Trello available data:
+https://developer.atlassian.com/cloud/trello/power-ups/client-library/accessing-trello-data/
+*/
+
