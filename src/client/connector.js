@@ -52,7 +52,7 @@ let printCardBackDescription = function(t) {
                     icon: GRAY_ICON, // Must be a gray icon, colored icons not allowed.
                     content: {
                         type: 'iframe',
-                        url: t.signUrl('./card-back-section.html'),
+                        url: t.signUrl('https://www.publicdomainpictures.net/pictures/320000/velka/background-image.png'),
                         height: 200 // Max height is 1500
                     }
                 };
