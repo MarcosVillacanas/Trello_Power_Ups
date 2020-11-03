@@ -30,9 +30,21 @@ let setBadges = function(t){
         });
 }
 
+let readDesc = function(t){
+    return t.card('desc')
+        .get('desc')
+        .then(function(cardDesc){
+            console.log('Card desc: ' + cardDesc);
+        });
+}
+
 window.TrelloPowerUp.initialize({
     'card-badges': function(t, options){
-        return setBadges(t);
+        return [
+            setBadges(t)
+        ,
+            readDesc(t)
+        ]
     }
 });
 
