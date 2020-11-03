@@ -32,7 +32,7 @@ window.TrelloPowerUp.initialize({
             title: 'OKR Management Tool Info',
             content: {
                 type: 'iframe',
-                url: t.signUrl('../html/info.html'),
+                url: t.signUrl('./info.html'),
                 height: 230 // Max height is 1500
             }
         };
