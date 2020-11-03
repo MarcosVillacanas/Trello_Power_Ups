@@ -11,6 +11,7 @@ let setBadges = function(flag){
 
 let checkDesc = function(t){
     return t.card('desc')
+        .get('desc')
         .then(function(cardDesc){
             if (cardDesc) {
                 console.log("a");
@@ -27,9 +28,13 @@ let checkDesc = function(t){
 
 window.TrelloPowerUp.initialize({
     'card-badges': function(t, options){
-        const prueba = checkDesc(t);
-        const prueba2 = setBadges(prueba);
-        return prueba2;
+        const prueba = checkDesc(t).then(function(flag) {
+            return {
+                text: (flag)? 'APPROVED' : 'INVALID',
+                color: (flag)? 'green' : 'red'
+            };
+        });
+        return prueba;
     }
 });
 
