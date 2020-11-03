@@ -4,7 +4,8 @@ const CORRECT_ICON = 'src/icon/correct.svg';
 let setBadges = function(t, flag){
     return t.card('name')
         .get('name')
-        .then(function(cardName){
+        .then(function(){
+            console.log(flag);
             if (flag) {
                 return {
                     text: 'Approved',
