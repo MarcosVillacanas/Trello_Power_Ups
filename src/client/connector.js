@@ -25,17 +25,28 @@ let checkDesc = function(t){
         });
 }
 
+let printCardBackDescription = function(t) {
+    return t.card('name')
+        .get('name')
+        .then(function(name) {
+            if (name.startsWith("#Activate_OKR")) {
+                return {
+                    title: 'OKR Management Tool Info',
+                    icon: GRAY_ICON, // Must be a gray icon, colored icons not allowed.
+                    content: {
+                        type: 'iframe',
+                        url: t.signUrl('./card-back-section.html'),
+                        height: 230 // Max height is 1500
+                    }
+                };
+            }
+            return null;
+        });
+}
+
 window.TrelloPowerUp.initialize({
     'card-back-section': function(t){
-        return {
-            title: 'OKR Management Tool Info',
-            icon: GRAY_ICON, // Must be a gray icon, colored icons not allowed.
-            content: {
-                type: 'iframe',
-                url: t.signUrl('../html/info.html'),
-                height: 230 // Max height is 1500
-            }
-        };
+        return printCardBackDescription(t);
     },
     'card-badges': function(t) {
         return checkDesc(t).then(flag => setBadges(flag));

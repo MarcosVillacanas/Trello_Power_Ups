@@ -67,4 +67,4 @@ typings/
 dist/
 
 # Tokens
-src/js/tokens.js
+src/client/tokens.js
