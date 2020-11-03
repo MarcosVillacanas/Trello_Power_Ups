@@ -17,6 +17,7 @@ let checkDesc = function(t, nameFlag) {
             .then(function(cardDesc){
                 if (cardDesc) {
                     try {
+                        cardDesc = cardDesc.toLowerCase();
                         let splitFrom = cardDesc.split("from")[1].split("to")[0];
                         let splitTo = cardDesc.split("to")[1].split(" ")[1];
                         return /\d/.test(splitFrom) && /\d/.test(splitTo);
@@ -35,6 +36,7 @@ let checkName = function(t) {
     return t.card('name')
         .get('name')
         .then(function(cardName){
+            cardName = cardName.toUpperCase();
             return (cardName.startsWith("#KR"));
         });
 }
@@ -43,9 +45,10 @@ let printCardBackDescription = function(t) {
     return t.card('name')
         .get('name')
         .then(function(name) {
+            name = name.toUpperCase();
             if (name.startsWith("#Activate_OKR")) {
                 return {
-                    title: 'OKR Management Tool Info',
+                    title: 'Board id: ' + t.getContext().board,
                     icon: GRAY_ICON, // Must be a gray icon, colored icons not allowed.
                     content: {
                         type: 'iframe',
