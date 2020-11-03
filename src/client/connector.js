@@ -46,9 +46,9 @@ let printCardBackDescription = function(t) {
         .get('name')
         .then(function(name) {
             name = name.toUpperCase();
-            if (name.startsWith("#Activate_OKR")) {
+            if (name.startsWith("#ACTIVATE_OKR")) {
                 return {
-                    title: 'OKR Management Tool Info',
+                    title: 'OKR Management Tool Info' + t.getContext().board,
                     icon: GRAY_ICON, // Must be a gray icon, colored icons not allowed.
                     content: {
                         type: 'iframe',
@@ -63,7 +63,6 @@ let printCardBackDescription = function(t) {
 
 window.TrelloPowerUp.initialize({
     'card-back-section': function(t){
-        console.log(t.getContext().board);
         return printCardBackDescription(t);
     },
     'card-badges': function(t) {
