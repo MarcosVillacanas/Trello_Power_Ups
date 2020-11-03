@@ -1,32 +1,24 @@
-var GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
+const CORRECT_ICON = 'src/icon/correct.svg';
 
-let setBadges = function(t){
+
+let setBadges = function(t, flag){
     return t.card('name')
         .get('name')
         .then(function(cardName){
-            console.log('We just loaded the card name for fun: ' + cardName);
-            return [{
-                // Dynamic badges can have their function rerun
-                // after a set number of seconds defined by refresh.
-                // Minimum of 10 seconds.
-                dynamic: function(){
-                    // we could also return a Promise that resolves to
-                    // this as well if we needed to do something async first
-                    return {
-                        text: 'Dynamic ' + (Math.random() * 100).toFixed(0).toString(),
-                        icon: './images/icon.svg',
-                        color: 'green',
-                        refresh: 10 // in seconds
-                    };
+            if (flag) {
+                return {
+                    text: 'Approved',
+                    icon: CORRECT_ICON,
+                    color: 'green'
                 }
-            }, {
-                // It's best to use static badges unless you need your
-                // badges to refresh.
-                // You can mix and match between static and dynamic
-                text: 'Static',
-                icon: GRAY_ICON, // for card front badges only
-                color: null
-            }];
+            } else {
+                return {
+                    text: 'Invalid',
+                    icon: CORRECT_ICON,
+                    color: 'red'
+                }
+            }
+
         });
 }
 
@@ -35,20 +27,16 @@ let checkDesc = function(t){
         .get('desc')
         .then(function(cardDesc){
             if (cardDesc) {
-                let splitFrom = cardDesc.split("from")[1].match(/\d/g)[0];
-                let splitTo = cardDesc.split("to")[1].match(/\d/g)[0];
-                console.log('Card desc: ' + cardDesc + " " + splitFrom + " " + splitTo);
+                let splitFrom = cardDesc.split("from")[1].match(/\d/g);
+                let splitTo = cardDesc.split("to")[1].match(/\d/g);
+                setBadges(t, splitFrom && splitTo);
             }
         });
 }
 
 window.TrelloPowerUp.initialize({
     'card-badges': function(t, options){
-        return [
-            setBadges(t)
-        ,
-            checkDesc(t)
-        ]
+        return checkDesc(t);
     }
 });
 
