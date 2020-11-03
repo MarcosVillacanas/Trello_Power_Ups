@@ -26,7 +26,7 @@ let checkDesc = function(t){
                 let splitFrom = cardDesc.split("from")[1].split("to")[0];
                 let splitTo = cardDesc.split("to")[1].split(" ")[1];
                 console.log(splitFrom + " " + splitTo);
-                setBadges(t, splitFrom && splitTo);
+                setBadges(t, /\d/.test(splitFrom) && /\d/.test(splitTo));
             }
         });
 }
