@@ -1,12 +1,9 @@
-TrelloPowerUp.initialize({
-    'card-badges': function(t, opts) {
+window.TrelloPowerUp.initialize({
+    'card-badges': function (t, opts) {
         return t.card('all')
-            .then(function(card) {
-                console.log(card);
-                return[{
-                    text: card.idShort
-                }];
-            })
+            .then(function (card) {
+                console.log(JSON.stringify(card, null, 2));
+            });
     }
 });
 
