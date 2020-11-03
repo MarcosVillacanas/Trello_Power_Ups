@@ -34,7 +34,9 @@ let readDesc = function(t){
     return t.card('desc')
         .get('desc')
         .then(function(cardDesc){
-            console.log('Card desc: ' + cardDesc);
+            if (cardDesc !== null) {
+                console.log('Card desc: ' + cardDesc);
+            }
         });
 }
 
