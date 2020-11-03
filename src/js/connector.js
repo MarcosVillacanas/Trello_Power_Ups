@@ -1,4 +1,4 @@
-const CORRECT_ICON = 'src/icon/correct.svg';
+const CORRECT_ICON = '../src/icon/correct.svg';
 
 
 let setBadges = function(t, flag){
@@ -46,7 +46,7 @@ let checkDesc = function(t){
 
 window.TrelloPowerUp.initialize({
     'card-badges': function(t, options){
-        return setBadges(t, true);
+        return setBadges(t, checkDesc(t));
     }
 });
 
