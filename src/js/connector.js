@@ -2,25 +2,20 @@ const CORRECT_ICON = 'src/icon/correct.svg';
 
 
 let setBadges = function(t, flag){
-    return t.card('name')
-        .get('name')
-        .then(function(){
-            console.log(flag);
-            if (flag) {
-                return {
-                    text: 'Approved',
-                    icon: CORRECT_ICON,
-                    color: 'green'
-                }
-            } else {
-                return {
-                    text: 'Invalid',
-                    icon: CORRECT_ICON,
-                    color: 'red'
-                }
-            }
-
-        });
+    console.log(flag);
+    if (flag) {
+        return {
+            text: 'Approved',
+            icon: CORRECT_ICON,
+            color: 'green'
+        }
+    } else {
+        return {
+            text: 'Invalid',
+            icon: CORRECT_ICON,
+            color: 'red'
+        }
+    }
 }
 
 let checkDesc = function(t){
@@ -30,6 +25,7 @@ let checkDesc = function(t){
             if (cardDesc) {
                 let splitFrom = cardDesc.split("from")[1].match(/\d/g);
                 let splitTo = cardDesc.split("to")[1].match(/\d/g);
+                console.log(splitFrom + " " + splitTo);
                 setBadges(t, splitFrom && splitTo);
             }
         });
