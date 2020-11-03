@@ -3,6 +3,7 @@ const CORRECT_ICON = '../icon/correct.svg';
 
 let setBadges = function(flag){
     console.log(flag);
+    console.log(flag === true)
     return {
             text: (flag)? 'APPROVED' : 'INVALID',
             color: (flag)? 'green' : 'red'
@@ -28,7 +29,7 @@ let checkDesc = function(t){
 
 window.TrelloPowerUp.initialize({
     'card-badges': function(t, options){
-        return setBadges(Boolean(checkDesc(t)));
+        return setBadges(checkDesc(t));
     }
 });
 
