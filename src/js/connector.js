@@ -12,6 +12,6 @@ window.TrelloPowerUp.initialize({
             return[{
                 text: card.idShort
             }];
-        });
+        })
     }
 });
