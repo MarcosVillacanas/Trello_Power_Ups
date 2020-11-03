@@ -52,7 +52,7 @@ let printCardBackDescription = function(t) {
                     icon: GRAY_ICON, // Must be a gray icon, colored icons not allowed.
                     content: {
                         type: 'iframe',
-                        url: t.signUrl('./card-back-section.html'),
+                        url: t.signUrl('https://github.com/MarcosVillacanas/Trello_Power_Ups/blob/main/src/client/card-back-section.html'),
                         height: 750 // Max height is 1500
                     }
                 };
