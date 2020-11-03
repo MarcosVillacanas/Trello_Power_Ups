@@ -2,18 +2,14 @@ const CORRECT_ICON = '../icon/correct.svg';
 
 
 let setBadges = function(t, flag){
-    return t.card('name')
-        .get('name')
-        .then(function(){
-            return [
-                {
-                    text: 'APPROVED',
-                    color: 'green'
-                }, {
-                    text: 'INVALID',
-                    color: 'red'
-                }];
-        });
+    return [
+        {
+            text: 'APPROVED',
+            color: 'green'
+        }, {
+            text: 'INVALID',
+            color: 'red'
+        }];
 }
 
 let checkDesc = function(t){
