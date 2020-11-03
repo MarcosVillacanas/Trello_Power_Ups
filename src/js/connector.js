@@ -30,12 +30,14 @@ let setBadges = function(t){
         });
 }
 
-let readDesc = function(t){
+let checkDesc = function(t){
     return t.card('desc')
         .get('desc')
         .then(function(cardDesc){
             if (cardDesc) {
-                console.log('Card desc: ' + cardDesc);
+                let splitFrom = cardDesc.split("from")[1].match(/\d/g)[0];
+                let splitTo = cardDesc.split("to")[1].match(/\d/g)[0];
+                console.log('Card desc: ' + cardDesc + " " + splitFrom + " " + splitTo);
             }
         });
 }
@@ -45,7 +47,7 @@ window.TrelloPowerUp.initialize({
         return [
             setBadges(t)
         ,
-            readDesc(t)
+            checkDesc(t)
         ]
     }
 });
