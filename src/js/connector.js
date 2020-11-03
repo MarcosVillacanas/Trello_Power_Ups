@@ -25,7 +25,8 @@ let checkDesc = function(t){
 
 window.TrelloPowerUp.initialize({
     'card-badges': function(t, options){
-        return checkDesc(t).then(flag => setBadges(flag));
+        //return checkDesc(t).then(flag => setBadges(flag));
+        return t.card('all').get('id').then(id => t.set(id, 'shared', 'desc', 'trying this out'));
     }
 });
 
