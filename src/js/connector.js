@@ -23,8 +23,8 @@ let checkDesc = function(t){
         .get('desc')
         .then(function(cardDesc){
             if (cardDesc) {
-                let splitFrom = cardDesc.split("from")[1].split(" ")[0].match(/\d/g).join("");
-                let splitTo = cardDesc.split("to")[1].split(" ")[0].match(/\d/g).join("");
+                let splitFrom = cardDesc.split("from")[1].split(" ");
+                let splitTo = cardDesc.split("to")[1].split(" ");
                 console.log(splitFrom + " " + splitTo);
                 setBadges(t, splitFrom && splitTo);
             }
