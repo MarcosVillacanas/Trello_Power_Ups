@@ -4,30 +4,15 @@ const CORRECT_ICON = '../icon/correct.svg';
 let setBadges = function(t, flag){
     return t.card('name')
         .get('name')
-        .then(function(cardName){
-            console.log('We just loaded the card name for fun: ' + cardName);
-            return [{
-                // Dynamic badges can have their function rerun
-                // after a set number of seconds defined by refresh.
-                // Minimum of 10 seconds.
-                dynamic: function(){
-                    // we could also return a Promise that resolves to
-                    // this as well if we needed to do something async first
-                    return {
-                        text: 'Dynamic ' + (Math.random() * 100).toFixed(0).toString(),
-                        icon: CORRECT_ICON,
-                        color: 'green',
-                        refresh: 10 // in seconds
-                    };
-                }
-            }, {
-                // It's best to use static badges unless you need your
-                // badges to refresh.
-                // You can mix and match between static and dynamic
-                text: 'Static',
-                icon: CORRECT_ICON, // for card front badges only
-                color: null
-            }];
+        .then(function(){
+            return [
+                {
+                    text: 'APPROVED',
+                    color: 'green'
+                }, {
+                    text: 'INVALID',
+                    color: 'red'
+                }];
         });
 }
 
