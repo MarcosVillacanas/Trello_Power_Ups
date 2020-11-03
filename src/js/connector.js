@@ -1,4 +1,4 @@
-const CORRECT_ICON = '../src/icon/correct.svg';
+const CORRECT_ICON = '../icon/correct.svg';
 
 
 let setBadges = function(t, flag){
@@ -15,7 +15,7 @@ let setBadges = function(t, flag){
                     // this as well if we needed to do something async first
                     return {
                         text: 'Dynamic ' + (Math.random() * 100).toFixed(0).toString(),
-                        icon: './images/icon.svg',
+                        icon: CORRECT_ICON,
                         color: 'green',
                         refresh: 10 // in seconds
                     };
