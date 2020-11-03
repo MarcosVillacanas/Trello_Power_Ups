@@ -1,27 +1,41 @@
 const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
 
 let setBadges = function(flag){
+    if (flag === null) {
+        return null;
+    }
     return {
         text: (flag)? 'APPROVED' : 'INVALID',
         color: (flag)? 'green' : 'red'
     };
 }
 
-let checkDesc = function(t){
-    return t.card('desc')
-        .get('desc')
-        .then(function(cardDesc){
-            if (cardDesc) {
-                try {
-                    let splitFrom = cardDesc.split("from")[1].split("to")[0];
-                    let splitTo = cardDesc.split("to")[1].split(" ")[1];
-                    return /\d/.test(splitFrom) && /\d/.test(splitTo);
+let checkDesc = function(t, nameFlag) {
+    if (nameFlag) {
+        return t.card('desc')
+            .get('desc')
+            .then(function(cardDesc){
+                if (cardDesc) {
+                    try {
+                        let splitFrom = cardDesc.split("from")[1].split("to")[0];
+                        let splitTo = cardDesc.split("to")[1].split(" ")[1];
+                        return /\d/.test(splitFrom) && /\d/.test(splitTo);
+                    }
+                    catch (e) {
+                        return false
+                    }
                 }
-                catch (e) {
-                    return false
-                }
-            }
-            return false;
+                return false;
+            });
+    }
+    return null;
+}
+
+let checkName = function(t) {
+    return t.card('name')
+        .get('name')
+        .then(function(cardName){
+            return (cardName.startsWith("#KR"));
         });
 }
 
@@ -36,7 +50,7 @@ let printCardBackDescription = function(t) {
                     content: {
                         type: 'iframe',
                         url: t.signUrl('./card-back-section.html'),
-                        height: 230 // Max height is 1500
+                        height: 750 // Max height is 1500
                     }
                 };
             }
@@ -49,7 +63,7 @@ window.TrelloPowerUp.initialize({
         return printCardBackDescription(t);
     },
     'card-badges': function(t) {
-        return checkDesc(t).then(flag => setBadges(flag));
+        return checkName(t).then(nameFlag => checkDesc(t, nameFlag).then(flag => setBadges(flag)));
     }
 });
 
