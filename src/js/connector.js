@@ -27,8 +27,8 @@ let checkDesc = function(t){
 }
 
 window.TrelloPowerUp.initialize({
-    'card-badges': async function(t, options){
-        const prueba = await checkDesc(t);
+    'card-badges': function(t, options){
+        const prueba = checkDesc(t);
         const prueba2 = setBadges(prueba);
         return prueba2;
     }
