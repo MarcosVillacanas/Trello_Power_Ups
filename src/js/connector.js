@@ -11,7 +11,6 @@ let setBadges = function(flag){
 
 let checkDesc = function(t){
     return t.card('desc')
-        .get('desc')
         .then(function(cardDesc){
             if (cardDesc) {
                 console.log("a");
