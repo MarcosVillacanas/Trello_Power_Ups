@@ -27,6 +27,7 @@ let checkDesc = function(t){
 
 window.TrelloPowerUp.initialize({
     'card-back-section': function(t){
+        console.log("3");
         return {
             title: 'OKR Management Tool Info',
             content: {
