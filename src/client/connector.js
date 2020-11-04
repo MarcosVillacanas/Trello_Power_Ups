@@ -98,9 +98,10 @@ window.TrelloPowerUp.initialize({
                         let sortedCards = opts.cards.sort(
                             function(a,b) {
                                 a.name = a.name.toUpperCase();
-                                if (b.name === "#ACTIVATE_OKR" || invalidKeyResultsSet.has(b.id) || (a.members.length > b.members.length)) {
+                                b.name = b.name.toUpperCase();
+                                if (a.name === "#ACTIVATE_OKR" || invalidKeyResultsSet.has(b.id) || (a.members.length > b.members.length)) {
                                     return -1;
-                                } else if (a.name === "#ACTIVATE_OKR" || invalidKeyResultsSet.has(a.id) || (b.members.length > a.members.length)) {
+                                } else if (b.name === "#ACTIVATE_OKR" || invalidKeyResultsSet.has(a.id) || (b.members.length > a.members.length)) {
                                     return 1;
                                 }
                                 return 0;
