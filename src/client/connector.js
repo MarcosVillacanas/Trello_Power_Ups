@@ -8,7 +8,7 @@ let setBadges = function(t, flag){
     }
 
     t.card('id').get('id').then(id => (flag)?
-        invalidKeyResultsSet.add(id) : approvedKeyResultsSet.add(id));
+        approvedKeyResultsSet.add(id) : invalidKeyResultsSet.add(id));
 
     return t.card('members').get('members').then(members => {
         return {
