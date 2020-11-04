@@ -150,12 +150,11 @@ let showIframe = function (context) {
         type: 'confirm',
         title: 'Authorize to continue',
         confirmText: 'I want to authorize this power up',
-        onConfirm: () => context.getRestApi().authorize({ scope: 'read,write' })
-                .then(context.closePopup()),
+        onConfirm: () => context.getRestApi().authorize({ scope: 'read,write' }),
         confirmStyle: 'primary',
         cancelText: 'I do not want to use this power up',
-        onCancel: () => context.closePopup()
-    });
+        onCancel: () => console.log('Goodbye3.')
+    })
 }
 
 
@@ -191,7 +190,7 @@ window.TrelloPowerUp.initialize({
                             light: BLACK_ICON
                         },
                         text: 'Authorize first!',
-                        callback: function (context) { // function to run on click
+                        callback: function (context) {
                             return showIframe(context);
                         }
                     };
