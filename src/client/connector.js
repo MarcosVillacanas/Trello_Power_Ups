@@ -93,9 +93,9 @@ window.TrelloPowerUp.initialize({
                         let sortedCards = opts.cards.sort(
                             function(a,b) {
                                 if (a.members.length > b.members.length) {
-                                    return 1;
-                                } else if (b.members.length > a.members.length) {
                                     return -1;
+                                } else if (b.members.length > a.members.length) {
+                                    return 1;
                                 }
                                 return 0;
                             });
