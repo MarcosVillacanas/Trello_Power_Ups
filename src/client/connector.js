@@ -145,6 +145,14 @@ let onBtnClick = function (context) {
 };
 
 
+let showIframe = function (context) {
+    return context.popup({
+        title: 'Authorize to continue',
+        url: './authorize.html'
+    });
+}
+
+
 window.TrelloPowerUp.initialize({
     'card-back-section': function(t){
         return printCardBackDescription(t);
@@ -155,18 +163,38 @@ window.TrelloPowerUp.initialize({
     'list-sorters': function (t) {
         return sortKeyResults(t);
     },
-    'card-buttons': function () {
-        return {
-            icon: {
-                dark: WHITE_ICON,
-                light: BLACK_ICON
-            },
-            text: 'My Button',
-            callback: function (context) { // function to run on click
-                return onBtnClick(context);
-            }
-        }
+    'card-buttons': function(t) {
+        return t.getRestApi()
+            .isAuthorized()
+            .then(function(isAuthorized) {
+                if (isAuthorized) {
+                    return {
+                        icon: {
+                            dark: WHITE_ICON,
+                            light: BLACK_ICON
+                        },
+                        text: 'Go OKR!',
+                        callback: function (context) { // function to run on click
+                            return onBtnClick(context);
+                        }
+                    };
+                } else {
+                    return {
+                        icon: {
+                            dark: WHITE_ICON,
+                            light: BLACK_ICON
+                        },
+                        text: 'Authorize first!',
+                        callback: function (context) { // function to run on click
+                            return showIframe(context);
+                        }
+                    };
+                }
+            });
     }
+}, {
+    appKey: '5b78ab18393c29272dc25f6772ae72bf',
+    appName: 'Weather'
 });
 
 /*
