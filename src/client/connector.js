@@ -9,15 +9,17 @@ let setBadges = function(t, flag){
     t.card('members').get('members').then(members => console.log(members));
 
     if (flag === true) {
-        t.card('members').get('members').then(members => t.set('card', 'private', 'votes', members));
+        t.card('members').get('members').then(members => t.set('card', 'private', 'votes', members.length));
     }
     else {
         t.set('card', 'private', 'votes', -1);
     }
-    return {
-        text: (flag)? 'APPROVED' + t.get('card', 'private', 'votes') : 'INVALID' + t.get('card', 'private', 'votes'),
-        color: (flag)? 'green' : 'red'
-    };
+    t.get('card', 'private', 'votes').then(votes => {
+        return {
+            text: (flag) ? 'APPROVED ' + votes : 'INVALID ' + votes,
+            color: (flag) ? 'green' : 'red'
+        }
+    })
 }
 
 let checkDesc = function(t, nameFlag) {
@@ -72,6 +74,15 @@ let printCardBackDescription = function(t) {
         });
 }
 
+let sortVotes = function (aVotes, bVotes) {
+    if (aVotes > bVotes) {
+        return 1;
+    } else if (bVotes > aVotes) {
+        return -1;
+    }
+    return 0;
+}
+
 window.TrelloPowerUp.initialize({
     'card-back-section': function(t){
         return printCardBackDescription(t);
@@ -89,14 +100,9 @@ window.TrelloPowerUp.initialize({
                         // opts.cards contains all card objects in the list
                         let sortedCards = opts.cards.sort(
                             function(a,b) {
-                                let aVotes = a.get('card', 'private', 'votes');
-                                let bVotes = b.get('card', 'private', 'votes');
-                                if (aVotes > bVotes) {
-                                    return 1;
-                                } else if (bVotes > aVotes) {
-                                    return -1;
-                                }
-                                return 0;
+                                return a.get('card', 'private', 'votes')
+                                    .then(aVotes => b.get('card', 'private', 'votes')
+                                        .then(bVotes => sortVotes(aVotes, bVotes)));
                             });
 
                         return {
