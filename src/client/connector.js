@@ -162,8 +162,19 @@ window.TrelloPowerUp.initialize({
                 light: BLACK_ICON
             },
             text: 'My Button',
-            callback: onBtnClick(t, opts)
-        };
+            callback: function (context) { // function to run on click
+                return context.popup({
+                    type: 'confirm',
+                    title: 'Go OKR!',
+                    message: 'Are you sure on creating an OKR plan from the objective column?',
+                    confirmText: 'Yes, please go OKR',
+                    onConfirm: goOKR(t, opts),
+                    confirmStyle: 'primary',
+                    cancelText: 'Not yet, let me check my KR',
+                    onCancel: t.closePopup()
+                })
+            }
+        }
     }
 });
 
