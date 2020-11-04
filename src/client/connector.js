@@ -92,10 +92,9 @@ window.TrelloPowerUp.initialize({
                         // opts.cards contains all card objects in the list
                         let sortedCards = opts.cards.sort(
                             function(a,b) {
-                                console.log(a.members.length);
-                                if (a.name > b.name) {
+                                if (a.members.length > b.members.length) {
                                     return 1;
-                                } else if (b.name > a.name) {
+                                } else if (b.members.length > a.members.length) {
                                     return -1;
                                 }
                                 return 0;
