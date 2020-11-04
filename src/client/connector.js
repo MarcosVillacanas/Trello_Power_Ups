@@ -131,16 +131,16 @@ let goOKR = function(t, opts) {
     console.log("step by step");
 };
 
-let onBtnClick = function (t, opts) {
-    return t.popup({
+let onBtnClick = function (context) {
+    return context.popup({
         type: 'confirm',
         title: 'Go OKR!',
         message: 'Are you sure on creating an OKR plan from the objective column?',
         confirmText: 'Yes, please go OKR',
-        onConfirm: goOKR(t, opts),
+        onConfirm: () => console.log('Goodbye1.'),
         confirmStyle: 'primary',
         cancelText: 'Not yet, let me check my KR',
-        onCancel: t.closePopup()
+        onCancel: () => console.log('Goodbye2.')
     })
 };
 
@@ -163,16 +163,7 @@ window.TrelloPowerUp.initialize({
             },
             text: 'My Button',
             callback: function (context) { // function to run on click
-                return context.popup({
-                    type: 'confirm',
-                    title: 'Go OKR!',
-                    message: 'Are you sure on creating an OKR plan from the objective column?',
-                    confirmText: 'Yes, please go OKR',
-                    onConfirm: () => console.log('Goodbye1.'),
-                    confirmStyle: 'primary',
-                    cancelText: 'Not yet, let me check my KR',
-                    onCancel: () => console.log('Goodbye2.')
-                })
+                return onBtnClick(context);
             }
         }
     }
