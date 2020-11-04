@@ -132,7 +132,7 @@ let goOKR = function(t, opts) {
 };
 
 let onBtnClick = function (t, opts) {
-    t.card.popup({
+    return t.popup({
         type: 'confirm',
         title: 'Go OKR!',
         message: 'Are you sure on creating an OKR plan from the objective column?',
@@ -140,7 +140,7 @@ let onBtnClick = function (t, opts) {
         onConfirm: goOKR(t, opts),
         confirmStyle: 'primary',
         cancelText: 'Not yet, let me check my KR',
-        onCancel: t.card.closePopup()
+        onCancel: t.closePopup()
     })
 };
 
