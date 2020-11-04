@@ -6,7 +6,7 @@ let setBadges = function(t, flag){
     }
 
     t.card('members').get('members').then(members => {
-        console.log(members.length)
+        console.log(members, members.length)
         return {
             text: (flag) ? 'APPROVED ' + members.length : 'INVALID -1',
             color: (flag) ? 'green' : 'red'
@@ -93,8 +93,7 @@ window.TrelloPowerUp.initialize({
                         // opts.cards contains all card objects in the list
                         let sortedCards = opts.cards.sort(
                             function(a,b) {
-                                return a.get('members') .then(aMembers => b.get('members')
-                                        .then(bMembers => sortVotes(aMembers.length, bMembers.length)));
+                                return sortVotes(a.members.length, b.members.length);
                             });
 
                         return {
