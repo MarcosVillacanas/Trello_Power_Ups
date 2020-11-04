@@ -92,7 +92,8 @@ window.TrelloPowerUp.initialize({
                         // opts.cards contains all card objects in the list
                         let sortedCards = opts.cards.sort(
                             function(a,b) {
-                                console.log(a.labels, a.badge)
+                                console.log(a.customElements)
+                                a.name = a.name.toUpperCase();
                                 if ((a.members.length > b.members.length) || a.name === "#ACTIVATE_OKR") {
                                     return -1;
                                 } else if ((b.members.length > a.members.length) || b.name === "#ACTIVATE_OKR") {
