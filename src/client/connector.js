@@ -99,9 +99,9 @@ window.TrelloPowerUp.initialize({
                             function(a,b) {
                                 a.name = a.name.toUpperCase();
                                 console.log(a.name,  a.name === "#ACTIVATE_OKR")
-                                if ((a.members.length > b.members.length) || a.name === "#ACTIVATE_OKR") {
+                                if ((a.members.length > b.members.length) || b.name === "#ACTIVATE_OKR") {
                                     return -1;
-                                } else if ((b.members.length > a.members.length) || b.name === "#ACTIVATE_OKR") {
+                                } else if ((b.members.length > a.members.length) || a.name === "#ACTIVATE_OKR") {
                                     return 1;
                                 }
                                 return 0;
