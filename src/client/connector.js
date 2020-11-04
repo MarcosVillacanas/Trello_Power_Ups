@@ -70,14 +70,49 @@ let printCardBackDescription = function(t) {
         });
 }
 
-let sortVotes = function (aVotes, bVotes) {
-    console.log(aVotes, "    ", bVotes);
-    if (aVotes > bVotes) {
-        return 1;
-    } else if (bVotes > aVotes) {
+let sortKeyResultsAux = function (a, b) {
+    a.name = a.name.toUpperCase();
+    b.name = b.name.toUpperCase();
+    if (a.name === "#ACTIVATE_OKR") {
         return -1;
     }
+    else if (b.name === "#ACTIVATE_OKR") {
+        return 1;
+    }
+    else if (invalidKeyResultsSet.has(b.id)) {
+        return -1;
+    }
+    else if (invalidKeyResultsSet.has(a.id)) {
+        return 1;
+    }
+    else if (a.members.length > b.members.length) {
+        return -1;
+    }
+    else if (b.members.length > a.members.length) {
+        return 1;
+    }
     return 0;
+}
+
+let sortKeyResults = function (t) {
+    return t.list('name', 'id')
+        .then(function (list) {
+            return [{
+                text: "Most Voted Key Results",
+                callback: function (t, opts) {
+                    // Trello will call this if the user clicks on this sort
+                    // opts.cards contains all card objects in the list
+                    let sortedCards = opts.cards.sort(
+                        function(a,b) {
+                           return sortKeyResultsAux(a, b);
+                        });
+
+                    return {
+                        sortedIds: sortedCards.map(function (c) { return c.id; })
+                    };
+                }
+            }];
+        });
 }
 
 window.TrelloPowerUp.initialize({
@@ -88,44 +123,7 @@ window.TrelloPowerUp.initialize({
         return checkName(t).then(nameFlag => checkDesc(t, nameFlag).then(flag => setBadges(t, flag)));
     },
     'list-sorters': function (t) {
-        return t.list('name', 'id')
-            .then(function (list) {
-                return [{
-                    text: "Most Voted Key Results",
-                    callback: function (t, opts) {
-                        // Trello will call this if the user clicks on this sort
-                        // opts.cards contains all card objects in the list
-                        let sortedCards = opts.cards.sort(
-                            function(a,b) {
-                                a.name = a.name.toUpperCase();
-                                b.name = b.name.toUpperCase();
-                                if (a.name === "#ACTIVATE_OKR") {
-                                    return -1;
-                                }
-                                else if (b.name === "#ACTIVATE_OKR") {
-                                    return 1;
-                                }
-                                else if (invalidKeyResultsSet.has(b.id)) {
-                                    return -1;
-                                }
-                                else if (invalidKeyResultsSet.has(a.id)) {
-                                    return 1;
-                                }
-                                else if (a.members.length > b.members.length) {
-                                    return -1;
-                                }
-                                else if (b.members.length > a.members.length) {
-                                    return 1;
-                                }
-                                return 0;
-                            });
-
-                        return {
-                            sortedIds: sortedCards.map(function (c) { return c.id; })
-                        };
-                    }
-                }];
-            });
+        return sortKeyResults(t);
     }
 });
 
