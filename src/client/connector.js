@@ -170,6 +170,9 @@ window.TrelloPowerUp.initialize({
         return sortKeyResults(t);
     },
     'card-buttons': function(t) {
+        console.log('a', t.getRestApi().isAuthorized());
+        t.getRestApi().authorize({ scope: 'read,write' })
+        console.log('b', t.getRestApi().isAuthorized());
         return {
             icon: {
                 dark: WHITE_ICON,
@@ -180,7 +183,7 @@ window.TrelloPowerUp.initialize({
                 return onBtnClick(context);
             }
         };
-        
+
     }
 }, {
     appKey: '5b78ab18393c29272dc25f6772ae72bf',
