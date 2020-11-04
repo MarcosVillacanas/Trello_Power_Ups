@@ -170,26 +170,24 @@ window.TrelloPowerUp.initialize({
         return sortKeyResults(t);
     },
     'card-buttons': function(t) {
-        t.getRestApi().isAuthorized()
-            .then(isAuthorized => console.log(isAuthorized));
-        t.getRestApi().authorize({ scope: 'read,write' })
-            .then(t.getRestApi().isAuthorized()
-                .then(isAuthorized => console.log(isAuthorized)));
-        return {
-            icon: {
-                dark: WHITE_ICON,
-                light: BLACK_ICON
-            },
-            text: 'Go OKR!',
-            callback: function (context) { // function to run on click
-                return onBtnClick(context);
-            }
-        };
-
+        return t.getRestApi().isAuthorized()
+            .then(isAuthorized => {
+                if (isAuthorized) {
+                  console.log('error');
+                } else {
+                    return {
+                        icon: {
+                            dark: WHITE_ICON,
+                            light: BLACK_ICON
+                        },
+                        text: 'Go OKR!',
+                        callback: function (context) { // function to run on click
+                            return onBtnClick(context);
+                        }
+                    };
+                }
+            });
     }
-}, {
-    appKey: '5b78ab18393c29272dc25f6772ae72bf',
-    appName: 'Weather'
 });
 
 /*
