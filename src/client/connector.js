@@ -153,7 +153,7 @@ let showIframe = function (context) {
         onConfirm: () => context.getRestApi().authorize({ scope: 'read,write' })
                 .then(context.closePopup()),
         confirmStyle: 'primary',
-        cancelText: 'I do not want to use this power up,
+        cancelText: 'I do not want to use this power up',
         onCancel: () => context.closePopup()
     });
 }
