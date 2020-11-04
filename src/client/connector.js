@@ -105,10 +105,16 @@ window.TrelloPowerUp.initialize({
                                 else if (b.name === "#ACTIVATE_OKR") {
                                     return 1;
                                 }
-                                else if (invalidKeyResultsSet.has(b.id) || (a.members.length > b.members.length)) {
+                                else if (invalidKeyResultsSet.has(b.id)) {
                                     return -1;
                                 }
-                                else if (invalidKeyResultsSet.has(a.id) || (b.members.length > a.members.length)) {
+                                else if (invalidKeyResultsSet.has(a.id)) {
+                                    return 1;
+                                }
+                                else if (a.members.length > b.members.length) {
+                                    return -1;
+                                }
+                                else if (b.members.length > a.members.length) {
                                     return 1;
                                 }
                                 return 0;
