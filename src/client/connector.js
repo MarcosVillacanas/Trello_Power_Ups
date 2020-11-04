@@ -6,6 +6,7 @@ let setBadges = function(t, flag){
     }
 
     t.card('members').get('members').then(members => {
+        console.log(members.length)
         return {
             text: (flag) ? 'APPROVED ' + members.length : 'INVALID -1',
             color: (flag) ? 'green' : 'red'
@@ -66,6 +67,7 @@ let printCardBackDescription = function(t) {
 }
 
 let sortVotes = function (aVotes, bVotes) {
+    console.log(aVotes, "    ", bVotes);
     if (aVotes > bVotes) {
         return 1;
     } else if (bVotes > aVotes) {
