@@ -132,7 +132,7 @@ let goOKR = function(t, opts) {
 };
 
 let onBtnClick = function (t, opts) {
-    return t.popup({
+    t.popup({
         type: 'confirm',
         title: 'Go OKR!',
         message: 'Are you sure on creating an OKR plan from the objective column?',
@@ -162,7 +162,7 @@ window.TrelloPowerUp.initialize({
                 light: BLACK_ICON
             },
             text: 'My Button',
-            callback: onBtnClick,
+            callback: onBtnClick(t, opts),
             condition: 'always'
         };
     }
