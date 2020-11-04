@@ -145,17 +145,13 @@ let onBtnClick = function (context) {
 };
 
 
-let showIframe = function (context) {
+let authorizeMe = function (context) {
     return context.popup({
-        type: 'confirm',
-        title: 'Authorize to continue',
-        confirmText: 'I want to authorize this power up',
-        onConfirm: () => console.log('Goodbye3.'),
-            // context.getRestApi().authorize({ scope: 'read,write' }),
-        confirmStyle: 'primary',
-        cancelText: 'I do not want to use this power up',
-        onCancel: () => console.log('Goodbye4.')
-    })
+        title: 'Authorize Me',
+        args: { apiKey: '5b78ab18393c29272dc25f6772ae72bf' }, // Pass in API key to the iframe
+        url: './authorize.html', // Check out public/authorize.html to see how to ask a user to auth
+        height: 140,
+    });
 }
 
 
@@ -173,8 +169,6 @@ window.TrelloPowerUp.initialize({
         return t.getRestApi().isAuthorized()
             .then(isAuthorized => {
                 if (isAuthorized) {
-                  console.log('error');
-                } else {
                     return {
                         icon: {
                             dark: WHITE_ICON,
@@ -183,6 +177,17 @@ window.TrelloPowerUp.initialize({
                         text: 'Go OKR!',
                         callback: function (context) { // function to run on click
                             return onBtnClick(context);
+                        }
+                    };
+                } else {
+                    return {
+                        icon: {
+                            dark: WHITE_ICON,
+                            light: BLACK_ICON
+                        },
+                        text: 'Authorize me!',
+                        callback: function (context) { // function to run on click
+                            return authorizeMe(context);
                         }
                     };
                 }
