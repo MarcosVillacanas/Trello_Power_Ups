@@ -170,9 +170,11 @@ window.TrelloPowerUp.initialize({
         return sortKeyResults(t);
     },
     'card-buttons': function(t) {
-        console.log('a', t.getRestApi().isAuthorized());
+        t.getRestApi().isAuthorized()
+            .then(isAuthorized => console.log(isAuthorized));
         t.getRestApi().authorize({ scope: 'read,write' })
-        console.log('b', t.getRestApi().isAuthorized());
+            .then(t.getRestApi().isAuthorized()
+                .then(isAuthorized => console.log(isAuthorized)));
         return {
             icon: {
                 dark: WHITE_ICON,
