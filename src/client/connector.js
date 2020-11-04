@@ -171,15 +171,15 @@ window.TrelloPowerUp.initialize({
     },
     'card-buttons': function(t) {
         return {
-                    icon: {
-                        dark: WHITE_ICON,
-                        light: BLACK_ICON
-                    },
-                    text: (isAuthorized) ? 'Go OKR!' : 'Authorize first!',
-                    callback: function (context) { // function to run on click
-                        return (isAuthorized) ? onBtnClick(context) : showIframe(context);
-                    }
-                };
+            icon: {
+                dark: WHITE_ICON,
+                light: BLACK_ICON
+            },
+            text: 'Go OKR!',
+            callback: function (context) { // function to run on click
+                return onBtnClick(context);
+            }
+        };
         
     }
 }, {
