@@ -155,7 +155,7 @@ window.TrelloPowerUp.initialize({
     'list-sorters': function (t) {
         return sortKeyResults(t);
     },
-    'card-buttons': function (context) {
+    'card-buttons': function () {
         return {
             icon: {
                 dark: WHITE_ICON,
@@ -172,9 +172,7 @@ window.TrelloPowerUp.initialize({
                     confirmStyle: 'primary',
                     cancelText: 'Not yet, let me check my KR',
                     onCancel: () => console.log('Goodbye2.')
-                }).then(function(){
-                    return context.closePopup();
-                });
+                })
             }
         }
     }
