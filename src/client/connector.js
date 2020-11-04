@@ -14,7 +14,7 @@ let setBadges = function(t, flag){
     else {
         t.set('card', 'private', 'votes', -1);
     }
-    console.log(t);
+    console.log(t.card('members'));
     t.get('card', 'private', 'votes').then(votes => {
         return {
             text: (flag) ? 'APPROVED ' + votes : 'INVALID ' + votes,
