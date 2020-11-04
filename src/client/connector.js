@@ -67,6 +67,31 @@ window.TrelloPowerUp.initialize({
     },
     'card-badges': function(t) {
         return checkName(t).then(nameFlag => checkDesc(t, nameFlag).then(flag => setBadges(flag)));
+    },
+    'list-sorters': function (t) {
+        return t.list('name', 'id')
+            .then(function (list) {
+                return [{
+                    text: "Card Name",
+                    callback: function (t, opts) {
+                        // Trello will call this if the user clicks on this sort
+                        // opts.cards contains all card objects in the list
+                        let sortedCards = opts.cards.sort(
+                            function(a,b) {
+                                if (a.name > b.name) {
+                                    return 1;
+                                } else if (b.name > a.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            });
+
+                        return {
+                            sortedIds: sortedCards.map(function (c) { return c.id; })
+                        };
+                    }
+                }];
+            });
     }
 });
 
