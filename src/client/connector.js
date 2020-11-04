@@ -149,7 +149,7 @@ let authorizeMe = function (context) {
     return context.popup({
         title: 'Authorize Me',
         args: { apiKey: '5b78ab18393c29272dc25f6772ae72bf' }, // Pass in API key to the iframe
-        url: './authorize.html', // Check out public/authorize.html to see how to ask a user to auth
+        url: 'authorize.html', // Check out public/authorize.html to see how to ask a user to auth
         height: 140,
     });
 }
