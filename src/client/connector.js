@@ -173,29 +173,16 @@ window.TrelloPowerUp.initialize({
         return t.getRestApi()
             .isAuthorized()
             .then(function(isAuthorized) {
-                if (isAuthorized) {
-                    return {
-                        icon: {
-                            dark: WHITE_ICON,
-                            light: BLACK_ICON
-                        },
-                        text: 'Go OKR!',
-                        callback: function (context) { // function to run on click
-                            return onBtnClick(context);
-                        }
-                    };
-                } else {
-                    return {
-                        icon: {
-                            dark: WHITE_ICON,
-                            light: BLACK_ICON
-                        },
-                        text: 'Authorize first!',
-                        callback: function (context) {
-                            return showIframe(context);
-                        }
-                    };
-                }
+                return {
+                    icon: {
+                        dark: WHITE_ICON,
+                        light: BLACK_ICON
+                    },
+                    text: (isAuthorized) ? 'Go OKR!' : 'Authorize first!',
+                    callback: function (context) { // function to run on click
+                        return (isAuthorized) ? onBtnClick(context) : showIframe(context);
+                    }
+                };
             });
     }
 }, {
