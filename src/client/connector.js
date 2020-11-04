@@ -162,7 +162,7 @@ window.TrelloPowerUp.initialize({
                 light: BLACK_ICON
             },
             text: 'My Button',
-            callback: function () { // function to run on click
+            callback: function (context) { // function to run on click
                 return context.popup({
                     type: 'confirm',
                     title: 'Go OKR!',
@@ -172,7 +172,9 @@ window.TrelloPowerUp.initialize({
                     confirmStyle: 'primary',
                     cancelText: 'Not yet, let me check my KR',
                     onCancel: () => console.log('Goodbye2.')
-                })
+                }).then(function(){
+                    return context.closePopup();
+                });
             }
         }
     }
