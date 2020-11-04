@@ -1,14 +1,14 @@
 const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
+let approvedKeyResultsSet = new Set();
 let invalidKeyResultsSet = new Set();
 
 let setBadges = function(t, flag){
     if (flag === null) {
         return null;
     }
-    if (!flag) {
-        t.card('id').get('id').then(id => invalidKeyResultsSet.add(id));
-        console.log(invalidKeyResultsSet);
-    }
+
+    t.card('id').get('id').then(id => (flag)?
+        invalidKeyResultsSet.add(id) : approvedKeyResultsSet.add(id));
 
     return t.card('members').get('members').then(members => {
         return {
@@ -85,10 +85,18 @@ let sortKeyResultsAux = function (a, b) {
     else if (invalidKeyResultsSet.has(a.id)) {
         return 1;
     }
-    else if (a.members.length > b.members.length) {
+    if (approvedKeyResultsSet.has(a.id) && approvedKeyResultsSet.has(b.id)) {
+        if (a.members.length > b.members.length) {
+            return -1;
+        } else if (b.members.length > a.members.length) {
+            return 1;
+        }
+        return 0;
+    }
+    else if (approvedKeyResultsSet.has(a.id)) {
         return -1;
     }
-    else if (b.members.length > a.members.length) {
+    else if (approvedKeyResultsSet.has(b.id)) {
         return 1;
     }
     return 0;
