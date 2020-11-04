@@ -155,23 +155,23 @@ window.TrelloPowerUp.initialize({
     'list-sorters': function (t) {
         return sortKeyResults(t);
     },
-    'card-buttons': function (t, opts) {
+    'card-buttons': function (context) {
         return {
             icon: {
                 dark: WHITE_ICON,
                 light: BLACK_ICON
             },
             text: 'My Button',
-            callback: function (context) { // function to run on click
+            callback: function () { // function to run on click
                 return context.popup({
                     type: 'confirm',
                     title: 'Go OKR!',
                     message: 'Are you sure on creating an OKR plan from the objective column?',
                     confirmText: 'Yes, please go OKR',
-                    onConfirm: goOKR(t, opts),
+                    onConfirm: () => console.log('Goodbye1.'),
                     confirmStyle: 'primary',
                     cancelText: 'Not yet, let me check my KR',
-                    onCancel: t.closePopup()
+                    onCancel: () => console.log('Goodbye2.')
                 })
             }
         }
