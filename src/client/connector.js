@@ -147,8 +147,14 @@ let onBtnClick = function (context) {
 
 let showIframe = function (context) {
     return context.popup({
+        type: 'confirm',
         title: 'Authorize to continue',
-        url: './authorize.html'
+        confirmText: 'I want to authorize this power up',
+        onConfirm: () => context.getRestApi().authorize({ scope: 'read,write' })
+                .then(context.closePopup()),
+        confirmStyle: 'primary',
+        cancelText: 'I do not want to use this power up,
+        onCancel: () => context.closePopup()
     });
 }
 
