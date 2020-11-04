@@ -5,19 +5,9 @@ let setBadges = function(t, flag){
         return null;
     }
 
-    console.log(1);
-    t.card('members').get('members').then(members => console.log(members));
-
-    if (flag === true) {
-        t.card('members').get('members').then(members => t.set('card', 'private', 'votes', members.length));
-    }
-    else {
-        t.set('card', 'private', 'votes', -1);
-    }
-    console.log(t.card('members'));
-    t.get('card', 'private', 'votes').then(votes => {
+    t.card('members').get('members').then(members => {
         return {
-            text: (flag) ? 'APPROVED ' + votes : 'INVALID ' + votes,
+            text: (flag) ? 'APPROVED ' + members.length : 'INVALID -1',
             color: (flag) ? 'green' : 'red'
         }
     })
@@ -101,9 +91,8 @@ window.TrelloPowerUp.initialize({
                         // opts.cards contains all card objects in the list
                         let sortedCards = opts.cards.sort(
                             function(a,b) {
-                                return a.get('card', 'private', 'votes')
-                                    .then(aVotes => b.get('card', 'private', 'votes')
-                                        .then(bVotes => sortVotes(aVotes, bVotes)));
+                                return a.get('members') .then(aMembers => b.get('members')
+                                        .then(bMembers => sortVotes(aMembers.length, bMembers.length)));
                             });
 
                         return {
