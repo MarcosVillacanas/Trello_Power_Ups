@@ -6,7 +6,7 @@
   "author": "Marcos Villacanas",
   "license": "MIT",
   "scripts": {
-    "build": "parcel build src/html/*.html"
+    "build": "parcel build js/html/*.html"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
