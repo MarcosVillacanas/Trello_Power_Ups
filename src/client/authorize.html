@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <title>Authorize</title>
+</head>
+<body>
+<button type=button>Click to authorize</button>
+<script src="https://p.trellocdn.com/power-up.min.js"></script>
+<script>
+    let t = window.TrelloPowerUp.iframe({
+        appKey: '5b78ab18393c29272dc25f6772ae72bf',
+        appName: 'Weather'
+    });
+    t.render(function() {
+        document.querySelector('button').addEventListener('click', function() {
+            t.getRestApi()
+                .authorize({ scope: 'read,write' })
+                .then(function(t) {
+                    alert('Success!');
+                });
+        }, false);
+    });
+</script>
+</body>
+</html>
