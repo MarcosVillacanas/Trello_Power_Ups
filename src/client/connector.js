@@ -1,8 +1,13 @@
 const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
+let invalidKeyResultsSet = new Set();
 
 let setBadges = function(t, flag){
     if (flag === null) {
         return null;
+    }
+    if (!flag) {
+        t.card('id').get('id').then(id => invalidKeyResultsSet.add(id));
+        console.log(invalidKeyResultsSet);
     }
 
     return t.card('members').get('members').then(members => {
@@ -92,8 +97,8 @@ window.TrelloPowerUp.initialize({
                         // opts.cards contains all card objects in the list
                         let sortedCards = opts.cards.sort(
                             function(a,b) {
-                                console.log(a.customElements)
                                 a.name = a.name.toUpperCase();
+                                console.log(a.name,  a.name === "#ACTIVATE_OKR")
                                 if ((a.members.length > b.members.length) || a.name === "#ACTIVATE_OKR") {
                                     return -1;
                                 } else if ((b.members.length > a.members.length) || b.name === "#ACTIVATE_OKR") {
