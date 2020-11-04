@@ -162,7 +162,7 @@ window.TrelloPowerUp.initialize({
                 light: BLACK_ICON
             },
             text: 'My Button',
-            callback: onBtnClick(t, opts),
+            callback: onBtnClick,
             condition: 'always'
         };
     }
