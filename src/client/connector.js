@@ -6,10 +6,10 @@ let setBadges = function(t, flag){
     }
 
     console.log(1);
-    t.get('members').then(members => console.log(members));
+    t.card('members').get('members').then(members => console.log(members));
 
     if (flag === true) {
-        t.get('members').then(members => t.set('card', 'private', 'votes', members));
+        t.card('members').get('members').then(members => t.set('card', 'private', 'votes', members));
     }
     else {
         t.set('card', 'private', 'votes', -1);
