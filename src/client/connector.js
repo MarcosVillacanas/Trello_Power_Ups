@@ -1,4 +1,8 @@
 const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
+const WHITE_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-white.svg';
+const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-black.svg';
+
+
 let approvedKeyResultsSet = new Set();
 let invalidKeyResultsSet = new Set();
 
@@ -123,6 +127,24 @@ let sortKeyResults = function (t) {
         });
 }
 
+let goOKR = function(t, opts) {
+    console.log("step by step");
+};
+
+let onBtnClick = function (t, opts) {
+    t.popup({
+        type: 'confirm',
+        title: 'Go OKR!',
+        message: 'Are you sure on creating an OKR plan from the objective column?',
+        confirmText: 'Yes, please go OKR',
+        onConfirm: goOKR(t, opts),
+        confirmStyle: 'primary',
+        cancelText: 'Not yet, let me check my KR',
+        onCancel: t.closePopup()
+    })
+};
+
+
 window.TrelloPowerUp.initialize({
     'card-back-section': function(t){
         return printCardBackDescription(t);
@@ -132,6 +154,17 @@ window.TrelloPowerUp.initialize({
     },
     'list-sorters': function (t) {
         return sortKeyResults(t);
+    },
+    'board-buttons': function (t, opts) {
+        return {
+            icon: {
+                dark: WHITE_ICON,
+                light: BLACK_ICON
+            },
+            text: 'My Button',
+            callback: onBtnClick,
+            condition: 'edit'
+        };
     }
 });
 
