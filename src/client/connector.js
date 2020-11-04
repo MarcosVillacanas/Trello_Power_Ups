@@ -132,7 +132,7 @@ let goOKR = function(t, opts) {
 };
 
 let onBtnClick = function (t, opts) {
-    t.popup({
+    return t.popup({
         type: 'confirm',
         title: 'Go OKR!',
         message: 'Are you sure on creating an OKR plan from the objective column?',
