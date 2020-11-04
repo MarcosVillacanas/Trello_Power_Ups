@@ -170,10 +170,7 @@ window.TrelloPowerUp.initialize({
         return sortKeyResults(t);
     },
     'card-buttons': function(t) {
-        return t.getRestApi()
-            .isAuthorized()
-            .then(function(isAuthorized) {
-                return {
+        return {
                     icon: {
                         dark: WHITE_ICON,
                         light: BLACK_ICON
@@ -183,7 +180,7 @@ window.TrelloPowerUp.initialize({
                         return (isAuthorized) ? onBtnClick(context) : showIframe(context);
                     }
                 };
-            });
+        
     }
 }, {
     appKey: '5b78ab18393c29272dc25f6772ae72bf',
