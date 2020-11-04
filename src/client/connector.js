@@ -188,6 +188,9 @@ window.TrelloPowerUp.initialize({
                 }
             });
     }
+}, {
+    appKey: '5b78ab18393c29272dc25f6772ae72bf',
+    appName: 'Weather'
 });
 
 /*
