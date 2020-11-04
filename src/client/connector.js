@@ -58,7 +58,7 @@ let printCardBackDescription = function(t) {
         .get('name')
         .then(function(name) {
             name = name.toUpperCase();
-            if (name.startsWith("#ACTIVATE_OKR")) {
+            if (name.startsWith("#OKR")) {
                 t.set('card', 'private', 'votes', '100000');
                 return {
                     title: 'Board ID: ' + t.getContext().board,
@@ -77,10 +77,10 @@ let printCardBackDescription = function(t) {
 let sortKeyResultsAux = function (a, b) {
     a.name = a.name.toUpperCase();
     b.name = b.name.toUpperCase();
-    if (a.name === "#ACTIVATE_OKR") {
+    if (a.name === "#OKR") {
         return -1;
     }
-    else if (b.name === "#ACTIVATE_OKR") {
+    else if (b.name === "#OKR") {
         return 1;
     }
     else if (invalidKeyResultsSet.has(b.id)) {
@@ -132,7 +132,7 @@ let goOKR = function(t, opts) {
 };
 
 let onBtnClick = function (t, opts) {
-    t.board.popup({
+    t.popup({
         type: 'confirm',
         title: 'Go OKR!',
         message: 'Are you sure on creating an OKR plan from the objective column?',
@@ -140,7 +140,7 @@ let onBtnClick = function (t, opts) {
         onConfirm: goOKR(t, opts),
         confirmStyle: 'primary',
         cancelText: 'Not yet, let me check my KR',
-        onCancel: t.board.closePopup()
+        onCancel: t.closePopup()
     })
 };
 
@@ -155,7 +155,7 @@ window.TrelloPowerUp.initialize({
     'list-sorters': function (t) {
         return sortKeyResults(t);
     },
-    'board-buttons': function (t, opts) {
+    'card-buttons': function (t, opts) {
         return {
             icon: {
                 dark: WHITE_ICON,
@@ -163,7 +163,7 @@ window.TrelloPowerUp.initialize({
             },
             text: 'My Button',
             callback: onBtnClick,
-            condition: 'edit'
+            condition: 'always'
         };
     }
 });
