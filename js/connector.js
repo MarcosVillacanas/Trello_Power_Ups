@@ -127,20 +127,39 @@ let sortKeyResults = function (t) {
         });
 }
 
-let goOKR = function(t, opts) {
-    console.log("step by step");
-};
 
-let onBtnClick = function (context) {
+function createOKR (t) {
+    let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
+    let TOKEN = t.getToken();
+
+    // acceder a mi columna
+
+    let okrCard = t.getContext().card;
+
+    const fetch = require('node-fetch');
+    let response = fetch('https://api.trello.com/1/cards/{okrCard}/list?key={API_KEY}&token={TOKEN}'
+        , { method: 'GET' })
+        .then(response => { return response.text();})
+        .catch(err => console.error(err));
+
+    console.log(response);
+
+    // leer las tarjetas que están por encima de OKR
+    // crear una lista llamada Product Backlog
+    // por cada una, crear una etiqueta, una tarjeta en PB
+    // por cada tarjeta nueva en PB, un checklist con tres elementos
+}
+
+let goOKR = function (context) {
     return context.popup({
         type: 'confirm',
         title: 'Go OKR!',
-        message: 'Are you sure on creating an OKR plan from the objective column?',
+        message: 'Are you sure on creating an OKR plan from this list with the above Key Results?',
         confirmText: 'Yes, please go OKR',
-        onConfirm: () => console.log('Goodbye1.'),
+        onConfirm: createOKR(context),
         confirmStyle: 'primary',
         cancelText: 'Not yet, let me check my KR',
-        onCancel: () => console.log('Goodbye2.')
+        onCancel: context.closePopup()
     })
 };
 
@@ -176,7 +195,7 @@ window.TrelloPowerUp.initialize({
                         },
                         text: 'Go OKR!',
                         callback: function (context) { // function to run on click
-                            return onBtnClick(context);
+                            return goOKR(context);
                         }
                     };
                 } else {
