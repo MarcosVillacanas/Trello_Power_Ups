@@ -35,6 +35,7 @@ let checkDesc = function(t, nameFlag) {
                         return /\d/.test(splitFrom) && /\d/.test(splitTo);
                     }
                     catch (e) {
+                        console.log('Invalid description: ' + e)
                         return false
                     }
                 }
@@ -128,24 +129,30 @@ let sortKeyResults = function (t) {
 }
 
 
+async function getOKRList(okrCard, API_KEY, TOKEN) {
+    try {
+        const response = await fetch('https://api.trello.com/1/cards/'
+            + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN, {
+            method: 'GET'
+        });
+        const list = await response.json();
+        return list;
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+
+
 function createOKR (t, token) {
     let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
     let TOKEN = token;
+    let okrCard = t.getContext().card;
 
     // acceder a mi columna
 
-    let okrCard = t.getContext().card;
-
-    const fetch = require('node-fetch');
-    let response;
-    fetch('https://api.trello.com/1/cards/'
-        + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN, { method: 'GET' })
-        .then(rp => {
-            response = rp.text();
-            console.log(response);
-        })
-        .catch(err => console.error(err));
-
+    let OKRList = getOKRList(okrCard, API_KEY, TOKEN);
+    console.log(OKRList);
 
     // leer las tarjetas que están por encima de OKR
     // crear una lista llamada Product Backlog
@@ -153,17 +160,17 @@ function createOKR (t, token) {
     // por cada tarjeta nueva en PB, un checklist con tres elementos
 }
 
-let goOKR = function (context) {
-    return context.popup({
+let goOKR = function (t) {
+    return t.popup({
         type: 'confirm',
         title: 'Go OKR!',
         message: 'Are you sure on creating an OKR plan from this list with the above Key Results?',
         confirmText: 'Yes, please go OKR',
-        onConfirm: () => context.getRestApi().getToken()
-            .then(token => createOKR(context, token)),
+        onConfirm: () => t.getRestApi().getToken()
+            .then(token => createOKR(t, token)),
         confirmStyle: 'primary',
         cancelText: 'Not yet, let me check my KR',
-        onCancel: () => context.closePopup()
+        onCancel: function (context) { context.closePopup(); }
     })
 };
 
