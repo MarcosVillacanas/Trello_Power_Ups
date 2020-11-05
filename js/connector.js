@@ -140,12 +140,12 @@ function createOKR (t, token) {
     let response;
     fetch('https://api.trello.com/1/cards/'
         + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN, { method: 'GET' })
-        .then(rp => response = rp.text())
+        .then(rp => {
+            response = rp.text();
+            console.log(response);
+        })
         .catch(err => console.error(err));
 
-
-
-    console.log(response);
 
     // leer las tarjetas que están por encima de OKR
     // crear una lista llamada Product Backlog
