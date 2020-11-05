@@ -128,9 +128,11 @@ let sortKeyResults = function (t) {
 }
 
 
-function createOKR (t) {
+function createOKR (t, token) {
     let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
-    let TOKEN = t.getToken();
+    let TOKEN = token;
+
+    console.log(token);
 
     // acceder a mi columna
 
@@ -156,7 +158,8 @@ let goOKR = function (context) {
         title: 'Go OKR!',
         message: 'Are you sure on creating an OKR plan from this list with the above Key Results?',
         confirmText: 'Yes, please go OKR',
-        onConfirm: createOKR(context),
+        onConfirm: context.getRestApi().getToken()
+            .then(token => createOKR(context, token)),
         confirmStyle: 'primary',
         cancelText: 'Not yet, let me check my KR',
         onCancel: context.closePopup()
