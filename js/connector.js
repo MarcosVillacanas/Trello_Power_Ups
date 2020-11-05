@@ -9,7 +9,7 @@ const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827
 let approvedKeyResultsSet = new Set();
 let invalidKeyResultsSet = new Set();
 
-let setBadges = function(t, flag){
+function setBadges (t, flag){
     if (flag === null) {
         return null;
     }
@@ -25,7 +25,7 @@ let setBadges = function(t, flag){
     })
 }
 
-let checkDesc = function(t, nameFlag) {
+function checkDesc (t, nameFlag) {
     if (nameFlag) {
         return t.card('desc')
             .get('desc')
@@ -48,7 +48,7 @@ let checkDesc = function(t, nameFlag) {
     return null;
 }
 
-let checkName = function(t) {
+function checkName (t) {
     return t.card('name')
         .get('name')
         .then(function(cardName){
@@ -57,7 +57,7 @@ let checkName = function(t) {
         });
 }
 
-let printCardBackDescription = function(t) {
+function printCardBackDescription (t) {
     return t.card('name')
         .get('name')
         .then(function(name) {
@@ -78,7 +78,7 @@ let printCardBackDescription = function(t) {
         });
 }
 
-let sortKeyResultsAux = function (a, b) {
+function sortKeyResultsAux (a, b) {
     a.name = a.name.toUpperCase();
     b.name = b.name.toUpperCase();
     if (a.name === "#OKR") {
@@ -110,7 +110,7 @@ let sortKeyResultsAux = function (a, b) {
     return 0;
 }
 
-let sortKeyResults = function (t) {
+function sortKeyResults (t) {
     return t.list('name', 'id')
         .then(function (list) {
             return [{
@@ -147,14 +147,14 @@ async function getOKRList(okrCard, API_KEY, TOKEN) {
 }
 
 
-function createOKR (t, token) {
+async function createOKR (t, token) {
     let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
     let TOKEN = token;
     let okrCard = t.getContext().card;
 
     // acceder a mi columna
 
-    let OKRList = getOKRList(okrCard, API_KEY, TOKEN);
+    let OKRList = await getOKRList(okrCard, API_KEY, TOKEN);
     console.log(OKRList);
 
     // leer las tarjetas que están por encima de OKR
@@ -163,7 +163,7 @@ function createOKR (t, token) {
     // por cada tarjeta nueva en PB, un checklist con tres elementos
 }
 
-let goOKR = function (t) {
+function goOKR (t) {
     return t.popup({
         type: 'confirm',
         title: 'Go OKR!',
@@ -178,7 +178,7 @@ let goOKR = function (t) {
 };
 
 
-let authorizeMe = function (context) {
+function authorizeMe(context) {
     return context.popup({
         title: 'Authorize Me',
         args: { apiKey: '5b78ab18393c29272dc25f6772ae72bf' }, // Pass in API key to the iframe
