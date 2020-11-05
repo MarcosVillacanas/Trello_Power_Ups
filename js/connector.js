@@ -1,6 +1,3 @@
-require('babel-polyfill');
-require('babel-plugin-transform-runtime');
-
 const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
 const WHITE_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-white.svg';
 const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-black.svg';
@@ -139,7 +136,7 @@ async function getOKRList(okrCard, API_KEY, TOKEN) {
             method: 'GET'
         });
         const list = await response.json();
-        return list;
+        return list.id;
     }
     catch (error) {
         console.error(error);
