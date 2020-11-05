@@ -138,8 +138,8 @@ async function getOKRList(okrCard, API_KEY, TOKEN) {
             + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN, {
             method: 'GET'
         });
-        const list = await response.json();
-        return list;
+        const listID = await response.json().id;
+        return listID;
     }
     catch (error) {
         console.error(error);
@@ -154,8 +154,8 @@ async function createOKR (t, token) {
 
     // acceder a mi columna
 
-    let OKRList = await getOKRList(okrCard, API_KEY, TOKEN);
-    console.log(OKRList);
+    let okrList = await getOKRList(okrCard, API_KEY, TOKEN);
+    console.log(okrList);
 
     // leer las tarjetas que están por encima de OKR
     // crear una lista llamada Product Backlog
