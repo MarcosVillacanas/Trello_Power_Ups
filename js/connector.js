@@ -132,17 +132,18 @@ function createOKR (t, token) {
     let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
     let TOKEN = token;
 
-    console.log(token);
-
     // acceder a mi columna
 
     let okrCard = t.getContext().card;
 
     const fetch = require('node-fetch');
-    let response = fetch('https://api.trello.com/1/cards/{okrCard}/list?key={API_KEY}&token={TOKEN}'
-        , { method: 'GET' })
-        .then(response => { return response.text();})
+    let response;
+    fetch('https://api.trello.com/1/cards/' + okrCard + '/list?key=' +
+        + API_KEY + '&token=' + TOKEN, { method: 'GET' })
+        .then(rp => response = rp.text())
         .catch(err => console.error(err));
+
+
 
     console.log(response);
 
