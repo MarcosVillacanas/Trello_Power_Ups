@@ -138,8 +138,8 @@ async function getOKRList(okrCard, API_KEY, TOKEN) {
             + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN, {
             method: 'GET'
         });
-        const listID = await response.json().id;
-        return listID;
+        const list = await response.json();
+        return list;
     }
     catch (error) {
         console.error(error);
