@@ -138,8 +138,8 @@ function createOKR (t, token) {
 
     const fetch = require('node-fetch');
     let response;
-    fetch('https://api.trello.com/1/cards/' + okrCard + '/list?key=' +
-        + API_KEY + '&token=' + TOKEN, { method: 'GET' })
+    fetch('https://api.trello.com/1/cards/'
+        + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN, { method: 'GET' })
         .then(rp => response = rp.text())
         .catch(err => console.error(err));
 
@@ -159,11 +159,11 @@ let goOKR = function (context) {
         title: 'Go OKR!',
         message: 'Are you sure on creating an OKR plan from this list with the above Key Results?',
         confirmText: 'Yes, please go OKR',
-        onConfirm: context.getRestApi().getToken()
+        onConfirm: () => context.getRestApi().getToken()
             .then(token => createOKR(context, token)),
         confirmStyle: 'primary',
         cancelText: 'Not yet, let me check my KR',
-        onCancel: context.closePopup()
+        onCancel: () => context.closePopup()
     })
 };
 
