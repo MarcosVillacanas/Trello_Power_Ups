@@ -9,6 +9,7 @@ const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827
 let approvedKeyResultsSet = new Set();
 
 function setBadges (t, flag){
+    
     if (flag === null) {
         return null;
     }
@@ -25,6 +26,7 @@ function setBadges (t, flag){
 }
 
 function checkDesc (t, nameFlag) {
+
     if (nameFlag) {
         return t.card('desc')
             .get('desc')
@@ -48,6 +50,7 @@ function checkDesc (t, nameFlag) {
 }
 
 function checkName (t) {
+
     return t.card('name')
         .get('name')
         .then(function(cardName){
@@ -57,6 +60,7 @@ function checkName (t) {
 }
 
 function printCardBackDescription (t) {
+
     return t.card('name')
         .get('name')
         .then(function(name) {
@@ -78,6 +82,7 @@ function printCardBackDescription (t) {
 }
 
 function sortKeyResultsAux (a, b) {
+
     a.name = a.name.toUpperCase();
     b.name = b.name.toUpperCase();
     if (a.name === "#OKR") {
@@ -104,6 +109,7 @@ function sortKeyResultsAux (a, b) {
 }
 
 function sortKeyResults (t) {
+
     return t.list('name', 'id')
         .then(function (list) {
             return [{
@@ -126,6 +132,7 @@ function sortKeyResults (t) {
 
 
 async function getOKRList(okrCard, API_KEY, TOKEN) {
+
     try {
         const response = await fetch('https://api.trello.com/1/cards/'
             + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN, {
@@ -140,6 +147,7 @@ async function getOKRList(okrCard, API_KEY, TOKEN) {
 }
 
 async function getAboveCards(okrList, API_KEY, TOKEN) {
+
     try {
         const response = await fetch('https://api.trello.com/1/lists/'
             + okrList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
@@ -162,6 +170,7 @@ async function getAboveCards(okrList, API_KEY, TOKEN) {
 }
 
 async function createPBList(okrBoard, API_KEY, TOKEN) {
+
     try {
         const response = await fetch('https://api.trello.com/1/boards/'
             + okrBoard + '/lists?key=' + API_KEY + '&token=' + TOKEN, {
@@ -192,13 +201,6 @@ async function createPBList(okrBoard, API_KEY, TOKEN) {
     }
 }
 
-function splitCardDesc(desc) {
-    desc = desc.toLowerCase();
-    let firstNumber = desc.split("from")[1].split("to")[0].match(/\d/g).join("");
-    let secondNumber = desc.split("to")[1].split(" ")[1].match(/\d/g).join("");
-    console.log(firstNumber, " ", secondNumber)
-}
-
 async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
 
     const labelColors = ['yellow', 'purple', 'blue', 'red', 'green', 'orange', 'black', 'sky', 'pink', 'lime'];
@@ -207,8 +209,7 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
         + okrBoard + '/labels?key=' + API_KEY + '&token=' + TOKEN, {
         method: 'GET'
     });
-    const labels = await response.json();
-    console.log(labels)
+    const labels = await response.json();¡
 
     let i = 0;
     let found = false;
@@ -217,7 +218,6 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
         i++;
     }
 
-    console.log(found)
     if (found) {
         return labels[i-1].id;
     }
@@ -229,6 +229,52 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
     });
     const label = await responsePost.json();
     return label.id;
+}
+
+function splitCardDesc(desc) {
+
+    const partialKRs = [];
+
+    desc = desc.toLowerCase();
+    let firstNumber = desc.split("from")[1].split("to")[0].match(/\d/g).join("");
+    let secondNumber = desc.split("to")[1].split(" ")[1].match(/\d/g).join("");
+
+    partialKRs.push("this");
+    partialKRs.push("is");
+    partialKRs.push("working");
+
+    return partialKRs;
+}
+
+async function createCheckers(idChecklist, krDesc, API_KEY, TOKEN) {
+
+    for (const partialKR of splitCardDesc(krDesc)) {
+        try {
+            await fetch('https://api.trello.com/1/checklists' + idChecklist
+                + '?key=' + API_KEY + '&token=' + TOKEN + '&name=' + partialKR, {
+                method: 'PUT'
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+async function createChecklist(idCard, krDesc, API_KEY, TOKEN) {
+
+    try {
+        const responsePost = await fetch('https://api.trello.com/1/checklists?key=' + API_KEY
+            + '&token=' + TOKEN + '&idCard=' + idCard + '&name=Progress', {
+            method: 'POST'
+        });
+        const checklist = await responsePost.json();
+        
+        await createCheckers(checklist.id, krDesc, API_KEY, TOKEN);
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
@@ -253,12 +299,15 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
             }
 
             if (!found) {
-                await fetch('https://api.trello.com/1/cards?key=' + API_KEY
+                const responsePost = await fetch('https://api.trello.com/1/cards?key=' + API_KEY
                     + '&token=' + TOKEN + '&name=' + card.desc + '&idList=' + pbList
                     + '&idLabels=' + [label], {
                     method: 'POST'
                 });
+                const newCard = await responsePost.json();
                 colorIndex++;
+
+                await createChecklist(newCard.id, card.desc, API_KEY, TOKEN);
             }
         }
         catch (error) {
@@ -268,6 +317,7 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
 }
 
 async function createOKR (t, token) {
+
     let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
     let TOKEN = token;
     let okrCard = t.getContext().card;
@@ -291,6 +341,7 @@ async function createOKR (t, token) {
 }
 
 function goOKR (t) {
+
     return t.popup({
         type: 'confirm',
         title: 'Go OKR!',
@@ -306,6 +357,7 @@ function goOKR (t) {
 
 
 function authorizeMe(context) {
+
     return context.popup({
         title: 'Authorize Me',
         args: { apiKey: '5b78ab18393c29272dc25f6772ae72bf' }, // Pass in API key to the iframe
@@ -316,6 +368,7 @@ function authorizeMe(context) {
 
 
 window.TrelloPowerUp.initialize({
+
     'card-back-section': function(t){
         return printCardBackDescription(t);
     },
