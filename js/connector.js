@@ -229,8 +229,8 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
                     });
                     colorIndex++;
                 }
-                console.log(card, card.description);
-                splitCardDesc(card.description);
+                console.log(card, card.desc);
+                splitCardDesc(card.desc);
             }
         }
         catch (error) {
