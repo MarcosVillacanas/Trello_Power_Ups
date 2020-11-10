@@ -177,7 +177,7 @@ async function createPBList(okrBoard, API_KEY, TOKEN) {
         }
 
         if (found) {
-            return lists[i].id;
+            return lists[i-1].id;
         }
 
         const responsePost = await fetch('https://api.trello.com/1/lists?key=' + API_KEY
@@ -217,7 +217,7 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
     }
 
     if (found) {
-        return labels[i].id;
+        return labels[i-1].id;
     }
 
     const responsePost = await fetch('https://api.trello.com/1/labels?key=' + API_KEY
@@ -250,8 +250,6 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
                 found = pbCards[i].name === card.name;
                 i++;
             }
-
-            console.log(card.name, found);
 
             if (!found) {
                 await fetch('https://api.trello.com/1/cards?key=' + API_KEY
@@ -287,8 +285,6 @@ async function createOKR (t, token) {
 
     // por cada una, crear una etiqueta, una tarjeta en PB
     // por cada tarjeta nueva en PB, un checklist con tres elementos
-
-    console.log('preCreate');
 
     await createCards(aboveCards, pbList, t.getContext().board, API_KEY, TOKEN);
 }
