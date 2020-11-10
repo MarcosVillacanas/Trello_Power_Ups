@@ -52,7 +52,7 @@ function checkName (t) {
         .get('name')
         .then(function(cardName){
             cardName = cardName.toUpperCase();
-            return (!cardName.startsWith("#OKR"));
+            return (cardName.startsWith("#KR"));
         });
 }
 
@@ -172,7 +172,8 @@ async function createPBList(okrBoard, API_KEY, TOKEN) {
         let i = 0;
         let found = false;
         while (!found && i < lists.length) {
-            found = lists[i].name === "Product Backlog"
+            console.log(lists[i].name, lists[i].name === "Product Backlog");
+            found = lists[i].name === "Product Backlog";
             i++;
         }
         if (found) {
