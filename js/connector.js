@@ -212,7 +212,7 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
     let i = 0;
     let found = false;
     while (!found && i < labels.length) {
-        found = labels[i].name === cardName;
+        found = labels[i].name === cardName.substr(1);
         i++;
     }
 
@@ -242,12 +242,11 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
                 method: 'GET'
             });
             const pbCards = await response.json();
-            console.log(pbCards)
 
             let i = 0;
             let found = false;
             while (!found && i < pbCards.length) {
-                found = pbCards[i].name === card.name;
+                found = pbCards[i].name === card.desc;
                 i++;
             }
 
