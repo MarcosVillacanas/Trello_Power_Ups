@@ -208,6 +208,7 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
         method: 'GET'
     });
     const labels = await response.json();
+    console.log(labels)
 
     let i = 0;
     let found = false;
@@ -216,6 +217,7 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
         i++;
     }
 
+    console.log(found)
     if (found) {
         return labels[i-1].id;
     }
