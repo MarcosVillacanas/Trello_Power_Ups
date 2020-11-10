@@ -293,7 +293,7 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
             let i = 0;
             let found = false;
             while (!found && i < pbCards.length) {
-                found = pbCards[i].name === card.desc;
+                found = pbCards[i].name === card.desc.split("from")[0];
                 i++;
             }
 
@@ -306,7 +306,7 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
                 const newCard = await responsePost.json();
                 colorIndex++;
 
-                await createChecklist(newCard.id, card.desc, API_KEY, TOKEN);
+                await createChecklist(newCard.id, card.desc.split("from")[0], API_KEY, TOKEN);
             }
         }
         catch (error) {
