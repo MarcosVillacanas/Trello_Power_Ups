@@ -161,6 +161,41 @@ async function getAboveCards(okrList, API_KEY, TOKEN) {
     }
 }
 
+async function createPBList(okrBoard, API_KEY, TOKEN) {
+    try {
+        const response = await fetch('https://api.trello.com/1/boards/'
+            + okrBoard + '/list?key=' + API_KEY + '&token=' + TOKEN, {
+            method: 'GET'
+        });
+        const lists = await response.json();
+
+        let i = 0;
+        let found = false;
+        while (!found && i < lists.length) {
+            found = lists[i].name === "Product Backlog"
+            i++;
+        }
+        if (found) {
+            return lists[i].id;
+        }
+    }
+    catch (error) {
+        console.error(error);
+    }
+
+    try {
+        const response = await fetch('https://api.trello.com/1/lists?key=' + API_KEY
+            + '&token=' + TOKEN + '&name=Product Backlog&idBoard=' + okrBoard , {
+            method: 'POST'
+        });
+        const list = await response.json();
+        return list.id;
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+
 
 async function createOKR (t, token) {
     let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
@@ -174,10 +209,11 @@ async function createOKR (t, token) {
     // leer las tarjetas que están por encima de OKR
 
     let aboveCards = await getAboveCards(okrList, API_KEY, TOKEN);
-    console.log(aboveCards);
-
 
     // crear una lista llamada Product Backlog
+
+    let pbList = await createPBList(t.getContext().board, API_KEY, TOKEN);
+
     // por cada una, crear una etiqueta, una tarjeta en PB
     // por cada tarjeta nueva en PB, un checklist con tres elementos
 }
