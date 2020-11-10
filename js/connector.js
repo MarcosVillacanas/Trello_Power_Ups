@@ -299,14 +299,14 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
 
             if (!found) {
                 const responsePost = await fetch('https://api.trello.com/1/cards?key=' + API_KEY
-                    + '&token=' + TOKEN + '&name=' + card.desc + '&idList=' + pbList
+                    + '&token=' + TOKEN + '&name=' + card.desc.split("from")[0] + '&idList=' + pbList
                     + '&idLabels=' + [label], {
                     method: 'POST'
                 });
                 const newCard = await responsePost.json();
                 colorIndex++;
 
-                await createChecklist(newCard.id, card.desc.split("from")[0], API_KEY, TOKEN);
+                await createChecklist(newCard.id, card.desc, API_KEY, TOKEN);
             }
         }
         catch (error) {
