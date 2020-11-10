@@ -199,37 +199,66 @@ function splitCardDesc(desc) {
     console.log(firstNumber, " ", secondNumber)
 }
 
-async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
+async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
 
     const labelColors = ['yellow', 'purple', 'blue', 'red', 'green', 'orange', 'black', 'sky', 'pink', 'lime'];
+
+    const response = await fetch('https://api.trello.com/1/boards/'
+        + okrBoard + '/labels?key=' + API_KEY + '&token=' + TOKEN, {
+        method: 'GET'
+    });
+    const labels = await response.json();
+
+    let i = 0;
+    let found = false;
+    while (!found && i < labels.length) {
+        found = labels[i].name === cardName;
+        i++;
+    }
+
+    if (found) {
+        return labels[i].id;
+    }
+
+    const responsePost = await fetch('https://api.trello.com/1/labels?key=' + API_KEY
+        + '&token=' + TOKEN + '&name=' + cardName.substr(1) + '&color=' + labelColors[colorIndex]
+        + '&idBoard=' + okrBoard, {
+        method: 'POST'
+    });
+    const label = await responsePost.json();
+    return label.id;
+
+
+}
+
+async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
+
     let colorIndex = 0;
 
     for (const card of aboveCards) {
         try {
-            const response = await fetch('https://api.trello.com/1/boards/'
-                + okrBoard + '/labels?key=' + API_KEY + '&token=' + TOKEN, {
+            const label = await createLabel(card.name, colorIndex, okrBoard, API_KEY, TOKEN);
+
+            const response = await fetch('https://api.trello.com/1/lists/'
+                + pbList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
                 method: 'GET'
             });
-            const labels = await response.json();
+            const pbCards = await response.json();
 
-            for (const label of labels) {
+            let i = 0;
+            let found = false;
+            while (!found && i < pbCards.length) {
+                found = pbCards[i].name === card.name;
+                i++;
+            }
 
-                let i = 0;
-                let found = false;
-                while (!found && i < labels.length) {
-                    found = labels[i].name === card.name;
-                    i++;
-                }
-
-                if (!found) {
-                    await fetch('https://api.trello.com/1/labels?key=' + API_KEY
-                        + '&token=' + TOKEN + '&name=' + card.name.substr(1) + '&color=' + labelColors[colorIndex]
-                        + '&idBoard=' + okrBoard, {
-                        method: 'POST'
-                    });
-                    colorIndex++;
-                }
-                splitCardDesc(card.desc);
+            if (!found) {
+                await fetch('https://api.trello.com/1/cards?key=' + API_KEY
+                    + '&token=' + TOKEN + '&name=' + card.desc + '&idList=' + okrBoard
+                    + '&idLabels=' + [label], {
+                    method: 'POST'
+                });
+                colorIndex++;
             }
         }
         catch (error) {
