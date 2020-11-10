@@ -194,8 +194,8 @@ async function createPBList(okrBoard, API_KEY, TOKEN) {
 
 function splitCardDesc(desc) {
     desc = desc.toLowerCase();
-    let firstNumber = desc.split("from")[1].split("to")[0];
-    let secondNumber = desc.split("to")[1].split(" ")[1];
+    let firstNumber = desc.split("from")[1].split("to")[0].match(/\d/g).join("");
+    let secondNumber = desc.split("to")[1].split(" ")[1].match(/\d/g).join("");
     console.log(firstNumber, " ", secondNumber)
 }
 
@@ -229,7 +229,6 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
                     });
                     colorIndex++;
                 }
-                console.log(card, card.desc);
                 splitCardDesc(card.desc);
             }
         }
