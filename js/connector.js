@@ -205,6 +205,7 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
     let colorIndex = 0;
 
     for (const card of aboveCards) {
+        console.log(card, card.name);
         try {
             const response = await fetch('https://api.trello.com/1/boards/'
                 + okrBoard + '/labels?key=' + API_KEY + '&token=' + TOKEN, {
