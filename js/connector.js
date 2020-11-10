@@ -7,7 +7,6 @@ const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827
 
 
 let approvedKeyResultsSet = new Set();
-let invalidKeyResultsSet = new Set();
 
 function setBadges (t, flag){
     if (flag === null) {
@@ -15,7 +14,7 @@ function setBadges (t, flag){
     }
 
     t.card('id').get('id').then(id => (flag)?
-        approvedKeyResultsSet.add(id) : invalidKeyResultsSet.add(id));
+        approvedKeyResultsSet.add(id) : null);
 
     return t.card('members').get('members').then(members => {
         return {
@@ -53,7 +52,7 @@ function checkName (t) {
         .get('name')
         .then(function(cardName){
             cardName = cardName.toUpperCase();
-            return (cardName.startsWith("#KR"));
+            return (!cardName.startsWith("#OKR"));
         });
 }
 
@@ -87,12 +86,6 @@ function sortKeyResultsAux (a, b) {
     else if (b.name === "#OKR") {
         return 1;
     }
-    else if (invalidKeyResultsSet.has(b.id)) {
-        return -1;
-    }
-    else if (invalidKeyResultsSet.has(a.id)) {
-        return 1;
-    }
     if (approvedKeyResultsSet.has(a.id) && approvedKeyResultsSet.has(b.id)) {
         if (a.members.length > b.members.length) {
             return -1;
@@ -107,7 +100,7 @@ function sortKeyResultsAux (a, b) {
     else if (approvedKeyResultsSet.has(b.id)) {
         return 1;
     }
-    return 0;
+    return -1;
 }
 
 function sortKeyResults (t) {
@@ -146,6 +139,28 @@ async function getOKRList(okrCard, API_KEY, TOKEN) {
     }
 }
 
+async function getAboveCards(okrList, API_KEY, TOKEN) {
+    try {
+        const response = await fetch('https://api.trello.com/1/lists/'
+            + okrList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
+            method: 'GET'
+        });
+        const cards = await response.json();
+
+        let i = 0;
+        while (cards[i].name !== "#OKR") {
+            if (!approvedKeyResultsSet.has(cards[i].id)) {
+                console.log("bad key result")
+            }
+            i++;
+        }
+        return cards.slice(0, i);
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+
 
 async function createOKR (t, token) {
     let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
@@ -155,9 +170,13 @@ async function createOKR (t, token) {
     // acceder a mi columna
 
     let okrList = await getOKRList(okrCard, API_KEY, TOKEN);
-    console.log(okrList);
 
     // leer las tarjetas que están por encima de OKR
+
+    let aboveCards = await getAboveCards(okrList, API_KEY, TOKEN);
+    console.log(aboveCards);
+
+
     // crear una lista llamada Product Backlog
     // por cada una, crear una etiqueta, una tarjeta en PB
     // por cada tarjeta nueva en PB, un checklist con tres elementos
