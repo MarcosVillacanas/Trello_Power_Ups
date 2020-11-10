@@ -253,7 +253,8 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
 
             if (!found) {
                 await fetch('https://api.trello.com/1/cards?key=' + API_KEY
-                    + '&token=' + TOKEN + '&idList=' + okrBoard, {
+                    + '&token=' + TOKEN + '&name=' + card.desc + '&idList=' + pbList
+                    + '&idLabels=' + [label], {
                     method: 'POST'
                 });
                 colorIndex++;
