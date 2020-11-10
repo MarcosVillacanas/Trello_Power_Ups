@@ -287,6 +287,8 @@ async function createOKR (t, token) {
     // por cada una, crear una etiqueta, una tarjeta en PB
     // por cada tarjeta nueva en PB, un checklist con tres elementos
 
+    console.log('preCreate');
+
     await createCards(aboveCards, pbList, t.getContext().board, API_KEY, TOKEN);
 }
 
