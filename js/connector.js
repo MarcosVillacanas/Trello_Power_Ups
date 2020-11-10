@@ -9,7 +9,7 @@ const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827
 let approvedKeyResultsSet = new Set();
 
 function setBadges (t, flag){
-    
+
     if (flag === null) {
         return null;
     }
@@ -209,7 +209,7 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
         + okrBoard + '/labels?key=' + API_KEY + '&token=' + TOKEN, {
         method: 'GET'
     });
-    const labels = await response.json();¡
+    const labels = await response.json();
 
     let i = 0;
     let found = false;
