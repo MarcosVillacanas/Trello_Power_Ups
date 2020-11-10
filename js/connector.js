@@ -251,8 +251,8 @@ async function createCheckers(idChecklist, krDesc, API_KEY, TOKEN) {
     for (const partialKR of splitCardDesc(krDesc)) {
         try {
             await fetch('https://api.trello.com/1/checklists/' + idChecklist
-                + '?key=' + API_KEY + '&token=' + TOKEN + '&name=' + partialKR, {
-                method: 'PUT'
+                + '/checkItems?key=' + API_KEY + '&token=' + TOKEN + '&name=' + partialKR, {
+                method: 'POST'
             });
         }
         catch (error) {
