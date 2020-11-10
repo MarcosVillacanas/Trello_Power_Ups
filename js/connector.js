@@ -35,8 +35,9 @@ function checkDesc (t, nameFlag) {
                     try {
                         cardDesc = cardDesc.toLowerCase();
                         let splitFrom = cardDesc.split("from")[1].split("to")[0];
-                        let splitTo = cardDesc.split("to")[1].split(" ")[1];
-                        return /\d/.test(splitFrom) && /\d/.test(splitTo);
+                        let splitTo = cardDesc.split("to")[1].split(" ")[1].split(",");
+                        return /\d/.test(splitFrom) && /\d/.test(splitTo[0])
+                            && /\d/.test(splitTo[1]) && /\d/.test(splitTo[2]);
                     }
                     catch (e) {
                         console.log('Invalid description: ' + e)
@@ -233,17 +234,15 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
 
 function splitCardDesc(desc) {
 
-    const partialKRs = [];
-
     desc = desc.toLowerCase();
-    let firstNumber = desc.split("from")[1].split("to")[0].match(/\d/g).join("");
-    let secondNumber = desc.split("to")[1].split(" ")[1].match(/\d/g).join("");
+    let firstNumber = parseFloat(desc.split("from")[1].split("to")[0]);
+    let secondNumbers = desc.split("to")[1].split(" ")[1].split(",").map(parseFloat);
 
-    partialKRs.push("this");
-    partialKRs.push("is");
-    partialKRs.push("working");
+    secondNumbers = secondNumbers.sort(function(a,b) {
+        return (secondNumbers[0] > firstNumber)? a - b : b - a;
+    });
 
-    return partialKRs;
+    return secondNumbers.map(function(secondNumber) {return "From " + firstNumber + " to " + secondNumber});
 }
 
 async function createCheckers(idChecklist, krDesc, API_KEY, TOKEN) {
