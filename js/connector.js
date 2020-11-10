@@ -227,8 +227,6 @@ async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
     });
     const label = await responsePost.json();
     return label.id;
-
-
 }
 
 async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
@@ -251,6 +249,8 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
                 found = pbCards[i].name === card.name;
                 i++;
             }
+
+            console.log(card.name, found);
 
             if (!found) {
                 await fetch('https://api.trello.com/1/cards?key=' + API_KEY
