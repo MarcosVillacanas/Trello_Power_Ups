@@ -164,7 +164,7 @@ async function getAboveCards(okrList, API_KEY, TOKEN) {
 async function createPBList(okrBoard, API_KEY, TOKEN) {
     try {
         const response = await fetch('https://api.trello.com/1/boards/'
-            + okrBoard + '/list?key=' + API_KEY + '&token=' + TOKEN, {
+            + okrBoard + '/lists?key=' + API_KEY + '&token=' + TOKEN, {
             method: 'GET'
         });
         const lists = await response.json();
