@@ -5,6 +5,7 @@ const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-
 const WHITE_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-white.svg';
 const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-black.svg';
 
+const API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
 
 let approvedKeyResultsSet = new Set();
 
@@ -131,16 +132,13 @@ function sortKeyResults (t) {
         });
 }
 
-
-async function getOKRList(okrCard, API_KEY, TOKEN) {
-
+async function apiRequest(url, method) {
+    const API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
     try {
-        const response = await fetch('https://api.trello.com/1/cards/'
-            + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN, {
-            method: 'GET'
+        const response = await fetch('https://api.trello.com/1/' + url, {
+            method: method
         });
-        const list = await response.json();
-        return list.id;
+        return await response.json();
     }
     catch (error) {
         console.error(error);
@@ -150,12 +148,11 @@ async function getOKRList(okrCard, API_KEY, TOKEN) {
 async function getAboveCards(okrList, API_KEY, TOKEN) {
 
     try {
-        /* const response = await fetch('https://api.trello.com/1/lists/'
+        const response = await fetch('https://api.trello.com/1/lists/'
             + okrList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
             method: 'GET'
-        }); */
-        const response = window.Trello.rest('GET', 'lists/' + okrList + '/cards?', {token:TOKEN});
-        const cards = response.responseText;
+        });
+        const cards = await response.json();
         console.log(cards)
 
         let i = 0;
@@ -319,13 +316,13 @@ async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
 
 async function createOKR (t, token) {
 
-    let API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
     let TOKEN = token;
-    let okrCard = t.getContext().card;
+    const okrCard = t.getContext().card;
 
     // acceder a mi columna
 
-    let okrList = await getOKRList(okrCard, API_KEY, TOKEN);
+    const okrListRequest = await apiRequest('cards/' + okrCard + '/list?key=' +API_KEY + '&token=' + TOKEN);
+    const okrList = okrListRequest.id;
 
     // leer las tarjetas que están por encima de OKR
 
