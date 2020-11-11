@@ -150,10 +150,11 @@ async function getOKRList(okrCard, API_KEY, TOKEN) {
 async function getAboveCards(okrList, API_KEY, TOKEN) {
 
     try {
-        const response = await fetch('https://api.trello.com/1/lists/'
+        /* const response = await fetch('https://api.trello.com/1/lists/'
             + okrList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
             method: 'GET'
-        });
+        }); */
+        const response = window.Trello.rest('GET', 'lists/' + okrList + '/cards?', {});
         const cards = await response.json();
 
         let i = 0;
