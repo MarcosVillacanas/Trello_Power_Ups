@@ -9,6 +9,7 @@
     "build": "parcel build *.html"
   },
   "devDependencies": {
+    "bluebird": "^3.7.2",
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {
