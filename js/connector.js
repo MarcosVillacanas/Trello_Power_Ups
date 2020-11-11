@@ -154,7 +154,7 @@ async function getAboveCards(okrList, API_KEY, TOKEN) {
             + okrList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
             method: 'GET'
         }); */
-        const cards = window.Trello.rest('GET', 'lists/' + okrList + '/cards?', {token:TOKEN});
+        const cards = window.Trello.rest('GET', 'lists/' + okrList + '/cards?', {token:TOKEN}).responseJSON;
         console.log(cards)
 
         let i = 0;
