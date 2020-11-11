@@ -133,7 +133,7 @@ function sortKeyResults (t) {
 }
 
 async function apiRequest(url, method) {
-    const API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
+
     try {
         const response = await fetch('https://api.trello.com/1/' + url, {
             method: method
@@ -145,89 +145,50 @@ async function apiRequest(url, method) {
     }
 }
 
-async function getAboveCards(okrList, API_KEY, TOKEN) {
+async function getAboveCards(okrList, TOKEN) {
 
-    try {
-        const response = await fetch('https://api.trello.com/1/lists/'
-            + okrList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
-            method: 'GET'
-        });
-        const cards = await response.json();
-        console.log(cards)
+    const cards = await apiRequest('lists/' + okrList + '/cards?key=' + API_KEY + '&token=' + TOKEN, 'GET');
 
-        let i = 0;
-        while (cards[i].name !== "#OKR") {
-            if (!approvedKeyResultsSet.has(cards[i].id)) {
-                console.log("bad key result")
-            }
-            i++;
-        }
-        return cards.slice(0, i);
-    }
-    catch (error) {
-        console.error(error);
-    }
+    const i = cards.map(function(card) {return card.name; }).indexOf("#OKR");
+
+    return cards.slice(0, i).filter(card => approvedKeyResultsSet.has(card.id));
 }
 
-async function createPBList(okrBoard, API_KEY, TOKEN) {
+async function createPBList(okrBoard, TOKEN) {
 
-    try {
-        const response = await fetch('https://api.trello.com/1/boards/'
-            + okrBoard + '/lists?key=' + API_KEY + '&token=' + TOKEN, {
-            method: 'GET'
-        });
-        const lists = await response.json();
-
-        let i = 0;
-        let found = false;
-        while (!found && i < lists.length) {
-            found = lists[i].name === "Product Backlog";
-            i++;
-        }
-
-        if (found) {
-            return lists[i-1].id;
-        }
-
-        const responsePost = await fetch('https://api.trello.com/1/lists?key=' + API_KEY
-            + '&token=' + TOKEN + '&name=Product Backlog&idBoard=' + okrBoard , {
-            method: 'POST'
-        });
-        const list = await responsePost.json();
-        return list.id;
-    }
-    catch (error) {
-        console.error(error);
-    }
-}
-
-async function createLabel(cardName, colorIndex, okrBoard, API_KEY, TOKEN) {
-
-    const labelColors = ['yellow', 'purple', 'blue', 'red', 'green', 'orange', 'black', 'sky', 'pink', 'lime'];
-
-    const response = await fetch('https://api.trello.com/1/boards/'
-        + okrBoard + '/labels?key=' + API_KEY + '&token=' + TOKEN, {
-        method: 'GET'
-    });
-    const labels = await response.json();
+    const lists = await apiRequest('boards/' + okrBoard + '/lists?key=' + API_KEY + '&token=' + TOKEN, 'GET');
 
     let i = 0;
-    let found = false;
-    while (!found && i < labels.length) {
-        found = labels[i].name === cardName.substr(1);
+    while (i < lists.length) {
+        if (lists[i].name === "Product Backlog") {
+            return lists[i].id;
+        }
         i++;
     }
 
-    if (found) {
-        return labels[i-1].id;
+    const list = await apiRequest('lists?key=' + API_KEY + '&token=' + TOKEN
+        + '&name=Product Backlog&idBoard=' + okrBoard, 'POST');
+
+    return list.id;
+}
+
+async function createLabel(cardName, colorIndex, okrBoard, TOKEN) {
+
+    const labels = await apiRequest('boards/' + okrBoard + '/labels?key=' + API_KEY + '&token=' + TOKEN, 'GET');
+
+    let i = 0;
+    while (i < labels.length) {
+        if (labels[i].name === cardName.substr(1)) {
+            return labels[i].id;
+        }
+        i++;
     }
 
-    const responsePost = await fetch('https://api.trello.com/1/labels?key=' + API_KEY
-        + '&token=' + TOKEN + '&name=' + cardName.substr(1) + '&color=' + labelColors[colorIndex]
-        + '&idBoard=' + okrBoard, {
-        method: 'POST'
-    });
-    const label = await responsePost.json();
+    const labelColors = ['yellow', 'purple', 'blue', 'red', 'green', 'orange', 'black', 'sky', 'pink', 'lime'];
+
+    const label = await apiRequest('labels?key=' + API_KEY + '&token=' + TOKEN + '&name=' + cardName.substr(1)
+        + '&color=' + labelColors[colorIndex] + '&idBoard=' + okrBoard, 'POST');
+
     return label.id;
 }
 
@@ -244,72 +205,43 @@ function splitCardDesc(desc) {
     return secondNumbers.map(function(secondNumber) {return "From " + firstNumber + " to " + secondNumber});
 }
 
-async function createCheckers(idChecklist, krDesc, API_KEY, TOKEN) {
+
+async function createChecklist(idCard, krDesc, TOKEN) {
+
+    const checklist = await apiRequest('checklists?key=' + API_KEY + '&token=' + TOKEN
+        + '&idCard=' + idCard + '&name=Progress', 'POST');
 
     for (const partialKR of splitCardDesc(krDesc)) {
-        try {
-            await fetch('https://api.trello.com/1/checklists/' + idChecklist
-                + '/checkItems?key=' + API_KEY + '&token=' + TOKEN + '&name=' + partialKR, {
-                method: 'POST'
-            });
-        }
-        catch (error) {
-            console.log(error);
-        }
+        await apiRequest('checklists/' + checklist.id + '/checkItems?key=' + API_KEY
+            + '&token=' + TOKEN + '&name=' + partialKR, 'POST');
     }
 }
 
-async function createChecklist(idCard, krDesc, API_KEY, TOKEN) {
-
-    try {
-        const responsePost = await fetch('https://api.trello.com/1/checklists?key=' + API_KEY
-            + '&token=' + TOKEN + '&idCard=' + idCard + '&name=Progress', {
-            method: 'POST'
-        });
-        const checklist = await responsePost.json();
-        
-        await createCheckers(checklist.id, krDesc, API_KEY, TOKEN);
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-
-async function createCards(aboveCards, pbList, okrBoard, API_KEY, TOKEN) {
+async function createCards(aboveCards, pbList, okrBoard, TOKEN) {
 
     let colorIndex = 0;
 
     for (const card of aboveCards) {
-        try {
-            const label = await createLabel(card.name, colorIndex, okrBoard, API_KEY, TOKEN);
 
-            const response = await fetch('https://api.trello.com/1/lists/'
-                + pbList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
-                method: 'GET'
-            });
-            const pbCards = await response.json();
+        const label = await createLabel(card.name, colorIndex, okrBoard, TOKEN);
 
-            let i = 0;
-            let found = false;
-            while (!found && i < pbCards.length) {
-                found = pbCards[i].name === card.desc.split("from")[0];
-                i++;
-            }
+        const pbCards = await apiRequest('lists/' + pbList + '/cards?key=' + API_KEY
+            + '&token=' + TOKEN, 'GET');
 
-            if (!found) {
-                const responsePost = await fetch('https://api.trello.com/1/cards?key=' + API_KEY
-                    + '&token=' + TOKEN + '&name=' + card.desc.split("from")[0] + '&idList=' + pbList
-                    + '&idLabels=' + [label], {
-                    method: 'POST'
-                });
-                const newCard = await responsePost.json();
-                colorIndex++;
-
-                await createChecklist(newCard.id, card.desc, API_KEY, TOKEN);
-            }
+        let i = 0;
+        let found = false;
+        while (!found && i < pbCards.length) {
+            found = pbCards[i].name === card.desc.split("from")[0];
+            i++;
         }
-        catch (error) {
-            console.error(error);
+
+        if (!found) {
+            const newCard = await apiRequest('cards?key=' + API_KEY + '&token=' + TOKEN + '&name='
+                + card.desc.split("from")[0] + '&idList=' + pbList + '&idLabels=' + [label], 'POST');
+
+            colorIndex++;
+
+            await createChecklist(newCard.id, card.desc, TOKEN);
         }
     }
 }
@@ -319,23 +251,14 @@ async function createOKR (t, token) {
     let TOKEN = token;
     const okrCard = t.getContext().card;
 
-    // acceder a mi columna
-
-    const okrListRequest = await apiRequest('cards/' + okrCard + '/list?key=' +API_KEY + '&token=' + TOKEN);
+    const okrListRequest = await apiRequest('cards/' + okrCard + '/list?key=' + API_KEY + '&token=' + TOKEN);
     const okrList = okrListRequest.id;
 
-    // leer las tarjetas que están por encima de OKR
+    let aboveCards = await getAboveCards(okrList, TOKEN);
 
-    let aboveCards = await getAboveCards(okrList, API_KEY, TOKEN);
+    let pbList = await createPBList(t.getContext().board, TOKEN);
 
-    // crear una lista llamada Product Backlog
-
-    let pbList = await createPBList(t.getContext().board, API_KEY, TOKEN);
-
-    // por cada una, crear una etiqueta, una tarjeta en PB
-    // por cada tarjeta nueva en PB, un checklist con tres elementos
-
-    await createCards(aboveCards, pbList, t.getContext().board, API_KEY, TOKEN);
+    await createCards(aboveCards, pbList, t.getContext().board, TOKEN);
 }
 
 function goOKR (t) {
@@ -351,7 +274,7 @@ function goOKR (t) {
         cancelText: 'Not yet, let me check my KR',
         onCancel: function (context) { context.closePopup(); }
     })
-};
+}
 
 
 function authorizeMe(context) {
@@ -408,9 +331,3 @@ window.TrelloPowerUp.initialize({
     appKey: '5b78ab18393c29272dc25f6772ae72bf',
     appName: 'Weather'
 });
-
-/*
-Trello available data:
-https://developer.atlassian.com/cloud/trello/power-ups/client-library/accessing-trello-data/
-*/
-
