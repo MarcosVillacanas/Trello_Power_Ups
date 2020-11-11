@@ -4,6 +4,7 @@ require('babel-plugin-transform-runtime');
 const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
 const WHITE_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-white.svg';
 const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-black.svg';
+const ROCKET_ICON = 'rocket.png';
 
 const API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
 
@@ -301,8 +302,8 @@ window.TrelloPowerUp.initialize({
                 if (isAuthorized) {
                     return {
                         icon: {
-                            dark: WHITE_ICON,
-                            light: BLACK_ICON
+                            dark: ROCKET_ICON,
+                            light: ROCKET_ICON
                         },
                         text: 'Go OKR!',
                         callback: function (context) { // function to run on click
