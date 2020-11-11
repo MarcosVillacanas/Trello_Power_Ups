@@ -155,7 +155,7 @@ async function getAboveCards(okrList, API_KEY, TOKEN) {
             method: 'GET'
         });
         const Promise = TrelloPowerUp.Promise;
-        const cards = Promise.response.json();
+        const cards = new Promise((resolve) => resolve(response.json()));
         console.log(cards);
 
         let i = 0;
