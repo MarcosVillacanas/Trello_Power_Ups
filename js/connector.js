@@ -113,12 +113,10 @@ function sortKeyResultsAux (a, b) {
 function sortKeyResults (t) {
 
     return t.list('name', 'id')
-        .then(function (list) {
+        .then(function () {
             return [{
                 text: "Most Voted Key Results",
                 callback: function (t, opts) {
-                    // Trello will call this if the user clicks on this sort
-                    // opts.cards contains all card objects in the list
                     let sortedCards = opts.cards.sort(
                         function(a,b) {
                            return sortKeyResultsAux(a, b);
