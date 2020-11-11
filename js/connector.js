@@ -302,8 +302,8 @@ window.TrelloPowerUp.initialize({
                 if (isAuthorized) {
                     return {
                         icon: {
-                            dark: BIRD_ICON,
-                            light: BIRD_ICON
+                            dark: 'https://openweathermap.org/img/w/04d.png',
+                            light: 'https://openweathermap.org/img/w/04d.png'
                         },
                         text: 'Go OKR!',
                         callback: function (context) { // function to run on click
