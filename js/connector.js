@@ -11,19 +11,17 @@ let approvedKeyResultsSet = new Set();
 
 function setBadges (t, flag){
 
-    if (flag === null) {
-        return null;
+    if (flag !== null) {
+        t.card('id').get('id').then(id => (flag)?
+            approvedKeyResultsSet.add(id) : null);
+
+        return t.card('members').get('members').then(members => {
+            return {
+                text: (flag) ? 'APPROVED ' + members.length : 'INVALID -1',
+                color: (flag) ? 'green' : 'red'
+            }
+        })
     }
-
-    t.card('id').get('id').then(id => (flag)?
-        approvedKeyResultsSet.add(id) : null);
-
-    return t.card('members').get('members').then(members => {
-        return {
-            text: (flag) ? 'APPROVED ' + members.length : 'INVALID -1',
-            color: (flag) ? 'green' : 'red'
-        }
-    })
 }
 
 function checkDesc (t, nameFlag) {
