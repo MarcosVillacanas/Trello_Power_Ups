@@ -4,7 +4,7 @@ require('babel-plugin-transform-runtime');
 const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
 const WHITE_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-white.svg';
 const BLACK_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-black.svg';
-const ROCKET_ICON = 'https://github.com/simple-icons/simple-icons/blob/3f46070f8d8ffd9591d8bba1fcdecd440407d4f0/icons/go.svg';
+const ROCKET_ICON = 'https://github.com/labelle/evolution-patterns/blob/de58c29caca10f03a1947af103242defdf844092/icons-gray/light-gray/circle-solid-light-gray.svg';
 
 const API_KEY = '5b78ab18393c29272dc25f6772ae72bf';
 
