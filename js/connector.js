@@ -155,9 +155,7 @@ async function getAboveCards(okrList, API_KEY, TOKEN) {
             + okrList + '/cards?key=' + API_KEY + '&token=' + TOKEN, {
             method: 'GET'
         });
-        Promise.resolve(response.json()).then(cards => console.log(cards));
-
-        const cards = ""
+        const cards = Promise.resolve(response.json()).then(okrListCards => {return okrListCards});
 
         let i = 0;
         while (cards[i].name !== "#OKR") {
