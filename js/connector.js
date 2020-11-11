@@ -301,7 +301,10 @@ window.TrelloPowerUp.initialize({
             .then(isAuthorized => {
                 if (isAuthorized) {
                     return {
-                        icon: BIRD_ICON,
+                        icon: {
+                            dark: BIRD_ICON,
+                            light: BIRD_ICON
+                        },
                         text: 'Go OKR!',
                         callback: function (context) { // function to run on click
                             return goOKR(context);
